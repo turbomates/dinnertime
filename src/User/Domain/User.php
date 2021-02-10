@@ -1,9 +1,11 @@
 <?php
 
 
-namespace App\User\Entity;
+namespace App\User\Domain;
 
 use Doctrine\ORM\Mapping as ORM;
+
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="users")
@@ -11,13 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
 class User
 {
     /**
-     * @ORM\ID
-     * @ORM\GeneratedValue
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="id", type="integer", nullable=false)
      */
     public $id;
     /**
-     * @ORM\Column(name="email", type="string", nullable=false)
+     * @ORM\Column(name="email", type="string", length=100, nullable=false)
      */
     public $email;
     /**
@@ -32,6 +34,5 @@ class User
      * @ORM\Column(name="phone_number", type="integer", length=15, nullable=false)
      */
     public $phoneNumber;
-
 
 }

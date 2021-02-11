@@ -30,5 +30,4 @@ class User extends AggregateRoot
      * @ORM\Column(name="phone_number", type="integer", length=15, nullable=true)
      */
     private int $phoneNumber;
-
 }

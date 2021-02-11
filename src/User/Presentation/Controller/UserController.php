@@ -16,6 +16,8 @@ class UserController extends AbstractController
     public function register(Request $request): Response
     {
         return new JsonResponse(['status' => 'ok']);
+
+        //return $this->render('userRegister');
     }
 }
 

@@ -1,38 +1,34 @@
 <?php
 
-
 namespace App\User\Domain;
 
+use App\core\AggregateRoot;
+use App\User\Domain\ValueObject\Name;
+use App\User\Domain\ValueObject\UserId;
 use Doctrine\ORM\Mapping as ORM;
-
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="users")
  */
-class User
-{
+class User extends AggregateRoot
+{   /**
+    * @ORM\Embedded(class="App\User\Domain\ValueObject\UserId", columnPrefix=false)
+    * @var UserId
+    */
+    private UserId $id;
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="email", type="string", length=100)
      */
-    public $id;
+    private string $email;
     /**
-     * @ORM\Column(name="email", type="string", length=100, nullable=false)
+     * @ORM\Embedded(class="App\User\Domain\ValueObject\Name", columnPrefix=false)
+     * @var Name
      */
-    public $email;
+    private Name $name;
     /**
-     * @ORM\Column(name="first_name", type="string", length=100, nullable=false)
+     * @ORM\Column(name="phone_number", type="integer", length=15, nullable=true)
      */
-    public $firstName;
-    /**
-     * @ORM\Column(name="last_name", type="string", length=100, nullable=false)
-     */
-    public $lastName;
-    /**
-     * @ORM\Column(name="phone_number", type="integer", length=15, nullable=false)
-     */
-    public $phoneNumber;
+    private int $phoneNumber;
 
 }

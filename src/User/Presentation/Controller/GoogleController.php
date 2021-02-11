@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Google\Presentation;
+namespace App\User\Presentation\Controller;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;

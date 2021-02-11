@@ -1,3 +1,0 @@
-index:
-    path: /
-    controller: App\User\Presentation\Controller\DefaultController::index

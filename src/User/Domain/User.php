@@ -8,7 +8,7 @@ use App\User\Domain\ValueObject\UserId;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\User\Infrastructure\Repository\UserRepository")
  * @ORM\Table(name="users")
  */
 class User extends AggregateRoot
@@ -30,4 +30,14 @@ class User extends AggregateRoot
      * @ORM\Column(name="phone_number", type="integer", length=15, nullable=true)
      */
     private int $phoneNumber;
+
+    private function __construct()
+    {
+
+    }
+
+    public static function create()
+    {
+
+    }
 }

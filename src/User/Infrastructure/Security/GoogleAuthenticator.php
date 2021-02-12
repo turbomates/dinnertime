@@ -2,7 +2,9 @@
 
 namespace App\User\Infrastructure\Security;
 
+use App\Core\Infrastructure\Repository\UserRepositoryInterface;
 use App\User\Domain\User;
+use App\User\Infrastructure\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
@@ -22,12 +24,14 @@ class GoogleAuthenticator extends SocialAuthenticator
     private ClientRegistry $clientRegistry;
     private EntityManagerInterface $em;
     private RouterInterface $router;
+    private UserRepositoryInterface $repository;
 
-    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $em, RouterInterface $router)
+    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $em, RouterInterface $router, UserRepositoryInterface $repository)
     {
         $this->clientRegistry = $clientRegistry;
         $this->em = $em;
         $this->router = $router;
+        $this->repository = $repository;
     }
     public function supports(Request $request) : bool
     {
@@ -43,13 +47,9 @@ class GoogleAuthenticator extends SocialAuthenticator
     {
         $googleUser = $this->getGoogleClient()->fetchUserFromToken($credentials);
         $email = $googleUser->getEmail();
-        $existingUser = $this->em->getRepository(User::class)->findOneBy(['googleId' => $googleUser->getId()]);
-        if ($existingUser){
-
-            return $existingUser;
-        }
-        $user = $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
-        $user->setGoogleId($googleUser->getId());
+        $this->repository->findByEmail($email);
+        $this->repository->add($user);
+        //$user->setGoogleId($googleUser->getId());
         $this->em->persist($user);
         $this->em->flush();
 

@@ -21,7 +21,7 @@ class GoogleController extends AbstractController
     {
         return $clientRegistry
             ->getClient('google')
-            ->redirect([], [])   //области к кторым получить доступ
+            ->redirect([], [])
             ;
     }
     /**

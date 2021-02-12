@@ -4,6 +4,7 @@ namespace App\User\Infrastructure\Security;
 
 use App\User\Domain\User;
 use Doctrine\ORM\EntityManagerInterface;
+use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
 use KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use League\OAuth2\Client\Token\AccessToken;
 
 class GoogleAuthenticator extends SocialAuthenticator
 {
@@ -27,15 +29,16 @@ class GoogleAuthenticator extends SocialAuthenticator
         $this->em = $em;
         $this->router = $router;
     }
-    public function supports(Request $request)
+    public function supports(Request $request) : bool
     {
         return $request->attributes->get('_route') === 'connect_google_check';
     }
 
-    public function getCredentials(Request $request)
+    public function getCredentials(Request $request) : AccessToken
     {
         return $this->fetchAccessToken($this->getGoogleClient());
     }
+
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $googleUser = $this->getGoogleClient()->fetchUserFromToken($credentials);
@@ -52,25 +55,27 @@ class GoogleAuthenticator extends SocialAuthenticator
 
         return $user;
     }
-    public function getGoogleClient()
+
+    public function getGoogleClient() : OAuth2ClientInterface
     {
         return $this->clientRegistry->getClient('google');
     }
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
+
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey) : RedirectResponse
     {
         $targetUrl = $this->router->generate('app_homepage');
 
         return new RedirectResponse($targetUrl);
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception) : Response
     {
         $message = strtr($exception->getMessageKey(), $exception->getMessageData());
 
         return new Response($message, Response::HTTP_FORBIDDEN);
     }
 
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, AuthenticationException $authException = null) : RedirectResponse
     {
         return new RedirectResponse('/connect/', Response::HTTP_TEMPORARY_REDIRECT);
     }

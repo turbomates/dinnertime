@@ -2,7 +2,7 @@
 
 namespace App\User\Domain;
 
-use App\core\AggregateRoot;
+use App\Core\Domain\AggregateRoot;
 use App\User\Domain\ValueObject\Name;
 use App\User\Domain\ValueObject\UserId;
 use Doctrine\ORM\Mapping as ORM;

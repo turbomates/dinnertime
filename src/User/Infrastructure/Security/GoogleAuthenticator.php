@@ -4,12 +4,17 @@ namespace App\User\Infrastructure\Security;
 
 use App\Core\Infrastructure\Repository\UserRepositoryInterface;
 use App\User\Domain\User;
+use App\User\Domain\ValueObject\Email;
+use App\User\Domain\ValueObject\Name;
+use App\User\Domain\ValueObject\UserId;
 use App\User\Infrastructure\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
 use KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
+use League\OAuth2\Client\Provider\GoogleUser;
+use phpDocumentor\Reflection\Types\Static_;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +38,7 @@ class GoogleAuthenticator extends SocialAuthenticator
         $this->router = $router;
         $this->repository = $repository;
     }
+
     public function supports(Request $request) : bool
     {
         return $request->attributes->get('_route') === 'connect_google_check';
@@ -45,13 +51,15 @@ class GoogleAuthenticator extends SocialAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
+        /** @var GoogleUser $googleUser */
         $googleUser = $this->getGoogleClient()->fetchUserFromToken($credentials);
         $email = $googleUser->getEmail();
-        $this->repository->findByEmail($email);
+        $user = $this->repository->findByEmail($email);
+
+        if (!$user){
+                $user = User::create(new Email($email), new Name($googleUser->getFirstName(), $googleUser->getLastName()));
+        }
         $this->repository->add($user);
-        //$user->setGoogleId($googleUser->getId());
-        $this->em->persist($user);
-        $this->em->flush();
 
         return $user;
     }

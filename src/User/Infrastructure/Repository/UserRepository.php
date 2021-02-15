@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\User\Infrastructure\Repository;
 
 use App\User\Domain\User;
@@ -14,16 +13,21 @@ class UserRepository implements UserRepositoryInterface
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-
     }
 
-    public function add()
+    public function add(User $user) : void
     {
-
+        $this->em->persist($user);
+        $this->em->flush();
     }
 
-    public function findByEmail()
+    public function findByEmail($email) : void
     {
-
+       $this->em->createQueryBuilder()
+           ->select('u')
+           ->from(User::class, 'u')
+           ->where('u.email = :email')
+           ->setParameter('email', $email)
+           ->getQuery();
     }
 }

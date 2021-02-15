@@ -3,6 +3,7 @@
 namespace App\User\Domain;
 
 use App\Core\Domain\AggregateRoot;
+use App\User\Domain\ValueObject\Email;
 use App\User\Domain\ValueObject\Name;
 use App\User\Domain\ValueObject\UserId;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,15 +13,17 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="users")
  */
 class User extends AggregateRoot
-{   /**
+{
+    /**
     * @ORM\Embedded(class="App\User\Domain\ValueObject\UserId", columnPrefix=false)
     * @var UserId
     */
     private UserId $id;
     /**
-     * @ORM\Column(name="email", type="string", length=100)
+     * @ORM\Embedded(class="App\User\Domain\ValueObject\Email", columnPrefix=false)
+     * @var Email
      */
-    private string $email;
+    private Email $email;
     /**
      * @ORM\Embedded(class="App\User\Domain\ValueObject\Name", columnPrefix=false)
      * @var Name
@@ -31,13 +34,14 @@ class User extends AggregateRoot
      */
     private int $phoneNumber;
 
-    private function __construct()
+    private function __construct(Email $email, Name $name)
     {
-
+        $this->email = $email;
+        $this->name = $name;
     }
 
-    public static function create()
+    public static function create(Email $email, Name $name) : self
     {
-
+        return new static($email, $name);
     }
 }

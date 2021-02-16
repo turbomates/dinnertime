@@ -7,6 +7,7 @@ use App\User\Domain\ValueObject\Email;
 use App\User\Domain\ValueObject\Name;
 use App\User\Domain\ValueObject\UserId;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\User\Infrastructure\Repository\UserRepository")
@@ -30,12 +31,13 @@ class User extends AggregateRoot
      */
     private Name $name;
     /**
-     * @ORM\Column(name="phone_number", type="integer", length=15, nullable=true)
+     * @ORM\Column(name="phone_number", type="string", length=15, nullable=true)
      */
-    private int $phoneNumber;
+    private string $phoneNumber;
 
     private function __construct(Email $email, Name $name)
     {
+        $this->id = new UserId();
         $this->email = $email;
         $this->name = $name;
     }

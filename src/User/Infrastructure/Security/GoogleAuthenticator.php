@@ -14,7 +14,6 @@ use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
 use KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use League\OAuth2\Client\Provider\GoogleUser;
-use phpDocumentor\Reflection\Types\Static_;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,6 +59,7 @@ class GoogleAuthenticator extends SocialAuthenticator
                 $user = User::create(new Email($email), new Name($googleUser->getFirstName(), $googleUser->getLastName()));
         }
         $this->repository->add($user);
+        $this->em->flush();
 
         return $user;
     }

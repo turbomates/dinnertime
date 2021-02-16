@@ -4,6 +4,7 @@ namespace App\User\Infrastructure\Repository;
 
 use App\User\Domain\User;
 use App\Core\Infrastructure\Repository\UserRepositoryInterface;
+use App\User\Domain\ValueObject\UserId;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UserRepository implements UserRepositoryInterface
@@ -18,7 +19,6 @@ class UserRepository implements UserRepositoryInterface
     public function add(User $user) : void
     {
         $this->em->persist($user);
-        $this->em->flush();
     }
 
     public function findByEmail($email) : void
@@ -28,6 +28,7 @@ class UserRepository implements UserRepositoryInterface
            ->from(User::class, 'u')
            ->where('u.email = :email')
            ->setParameter('email', $email)
-           ->getQuery();
+           ->getQuery()
+           ->getOneOrNullResult();
     }
 }

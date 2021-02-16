@@ -21,8 +21,7 @@ class GoogleController extends AbstractController
     {
         return $clientRegistry
             ->getClient('google')
-            ->redirect([], [])
-            ;
+            ->redirect([], []);
     }
     /**
      * @param Request $request
@@ -33,6 +32,6 @@ class GoogleController extends AbstractController
      */
     public function connectCheckAction(Request $request, ClientRegistry $clientRegistry)
     {
-        //return $this->redirectToRoute('your_homepage_route');
+        return $this->redirectToRoute('your_homepage_route');
     }
 }

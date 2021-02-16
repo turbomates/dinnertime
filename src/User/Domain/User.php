@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass="App\User\Infrastructure\Repository\UserRepository")
  * @ORM\Table(name="users")
  */
-class User extends AggregateRoot
+class User extends AggregateRoot implements UserInterface
 {
     /**
     * @ORM\Embedded(class="App\User\Domain\ValueObject\UserId", columnPrefix=false)
@@ -45,5 +45,30 @@ class User extends AggregateRoot
     public static function create(Email $email, Name $name) : self
     {
         return new static($email, $name);
+    }
+
+    public function getRoles()
+    {
+        return [];
+    }
+
+    public function getPassword()
+    {
+
+    }
+
+    public function getSalt()
+    {
+
+    }
+
+    public function getUsername()
+    {
+
+    }
+
+    public function eraseCredentials()
+    {
+
     }
 }

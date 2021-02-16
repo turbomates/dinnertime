@@ -12,13 +12,11 @@ use Symfony\Component\Security\Core\User\User;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/users", name="register")
+     * @Route("/user", name="register")
      */
     public function register(Request $request): Response
     {
         return new JsonResponse(['status' => 'ok']);
-
-        //return $this->render('userRegister');
     }
 }
 

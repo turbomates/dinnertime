@@ -54,7 +54,6 @@ class GoogleAuthenticator extends SocialAuthenticator
         $googleUser = $this->getGoogleClient()->fetchUserFromToken($credentials);
         $email = $googleUser->getEmail();
         $user = $this->repository->findByEmail($email);
-
         if (!$user){
                 $user = User::create(new Email($email), new Name($googleUser->getFirstName(), $googleUser->getLastName()));
         }
@@ -71,7 +70,7 @@ class GoogleAuthenticator extends SocialAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey) : RedirectResponse
     {
-        $targetUrl = $this->router->generate('app_homepage');
+        $targetUrl = $this->router->generate();
 
         return new RedirectResponse($targetUrl);
     }

@@ -2,6 +2,7 @@
 
 namespace App\User\Presentation\Controller;
 
+use App\User\Application\UserHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -12,8 +13,14 @@ use Symfony\Component\Security\Core\User\User;
 
 class UserController extends AbstractController
 {
+    private UserHandler $handler;
+
+    public function __construct(UserHandler $handler)
+    {
+        $this->handler = $handler;
+    }
     /**
-     * @Route("/user", name="register")
+     * @Route("/users", name="register")
      */
     public function register(Request $request): Response
     {
@@ -24,7 +31,38 @@ class UserController extends AbstractController
      */
     public function homepage() : Response
     {
-        return new Response('Welcome!');
+        return $this->render('userRegister.html.twig');
     }
+    /**
+     * @Route("/logout", name="app_logout")
+     */
+    public function logout()
+    {
+        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+    /**
+     * @Route("/user/rename")
+     */
+    public function rename() : Response
+    {
+        return new JsonResponse();
+    }
+    /**
+     * @Route("/user/change-phone-number")
+     */
+    public function changePhoneNumber() : Response
+    {
+        return new JsonResponse();
+    }
+    /**
+     * @Route("/user")
+     */
+    public function user() : Response
+    {
+        $user = $this->handler->user();
+
+        return $this->json($user);
+    }
+
 }
 

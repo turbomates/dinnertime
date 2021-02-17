@@ -84,6 +84,6 @@ class GoogleAuthenticator extends SocialAuthenticator
 
     public function start(Request $request, AuthenticationException $authException = null) : RedirectResponse
     {
-        return new RedirectResponse('/connect/', Response::HTTP_TEMPORARY_REDIRECT);
+        return new RedirectResponse('/connect/google', Response::HTTP_TEMPORARY_REDIRECT);
     }
 }

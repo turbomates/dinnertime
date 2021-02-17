@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\User\Infrastructure\Repository\UserRepository")
+ * @ORM\Entity()
  * @ORM\Table(name="users")
  */
 class User extends AggregateRoot implements UserInterface
@@ -37,7 +37,7 @@ class User extends AggregateRoot implements UserInterface
      */
     private PhoneNumber $phoneNumber;
 
-    private function __construct(Email $email, Name $name)
+    public function __construct(Email $email, Name $name)
     {
         $this->id = new UserId();
         $this->email = $email;
@@ -47,6 +47,21 @@ class User extends AggregateRoot implements UserInterface
     public static function create(Email $email, Name $name) : self
     {
         return new static($email, $name);
+    }
+
+    public function getUsername()
+    {
+        return $this->email->address();
+    }
+
+    public function getFirstName()
+    {
+        return $this->name->getFirstName();
+    }
+
+    public function getLastName()
+    {
+        return $this->name->getLastName();
     }
 
     public function getRoles()
@@ -60,11 +75,6 @@ class User extends AggregateRoot implements UserInterface
     }
 
     public function getSalt()
-    {
-
-    }
-
-    public function getUsername()
     {
 
     }

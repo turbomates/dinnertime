@@ -21,14 +21,19 @@ class UserRepository implements UserRepositoryInterface
         $this->em->persist($user);
     }
 
-    public function findByEmail(Email $email) : void
+    public function findByEmail(Email $email) : ?User
     {
-       $this->em->createQueryBuilder()
-           ->select('u')
-           ->from(User::class, 'u')
-           ->andWhere('u.email.email = :email')
-           ->setParameter('email', $email->address())
-           ->getQuery()
-           ->getOneOrNullResult();
+        return $this->em->createQueryBuilder()
+                    ->select('u')
+                    ->from(User::class, 'u')
+                    ->andWhere('u.email.email = :email')
+                    ->setParameter('email', $email->address())
+                    ->getQuery()
+                    ->getOneOrNullResult();
+    }
+
+    public function getUser() : User
+    {
+
     }
 }

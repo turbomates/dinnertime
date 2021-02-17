@@ -18,4 +18,9 @@ class Email
     {
         $this->email = $email;
     }
+
+    public function address(): string
+    {
+        return $this->email;
+    }
 }

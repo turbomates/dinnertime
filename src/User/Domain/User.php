@@ -5,6 +5,7 @@ namespace App\User\Domain;
 use App\Core\Domain\AggregateRoot;
 use App\User\Domain\ValueObject\Email;
 use App\User\Domain\ValueObject\Name;
+use App\User\Domain\ValueObject\PhoneNumber;
 use App\User\Domain\ValueObject\UserId;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -31,9 +32,10 @@ class User extends AggregateRoot implements UserInterface
      */
     private Name $name;
     /**
-     * @ORM\Column(name="phone_number", type="string", length=15, nullable=true)
+     * @ORM\Embedded(class="App\User\Domain\ValueObject\PhoneNumber", columnPrefix=false)
+     * @var PhoneNumber
      */
-    private string $phoneNumber;
+    private PhoneNumber $phoneNumber;
 
     private function __construct(Email $email, Name $name)
     {

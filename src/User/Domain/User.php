@@ -54,14 +54,14 @@ class User extends AggregateRoot implements UserInterface
         return $this->email->address();
     }
 
-    public function getFirstName()
+    public function rename(Name $name)
     {
-        return $this->name->getFirstName();
+        $this->name = $name;
     }
 
-    public function getLastName()
+    public function changePhoneNumber(PhoneNumber $phoneNumber)
     {
-        return $this->name->getLastName();
+        $this->phoneNumber = $phoneNumber;
     }
 
     public function getRoles()

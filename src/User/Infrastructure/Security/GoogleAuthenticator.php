@@ -57,7 +57,7 @@ class GoogleAuthenticator extends SocialAuthenticator
         if (!$user){
             $user = User::create(new Email($email), new Name($googleUser->getFirstName(), $googleUser->getLastName()));
         }
-        $this->repository->add($user);
+        $this->repository->persist($user);
         $this->em->flush();
 
         return $user;

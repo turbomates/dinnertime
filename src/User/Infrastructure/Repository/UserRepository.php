@@ -16,7 +16,7 @@ class UserRepository implements UserRepositoryInterface
         $this->em = $em;
     }
 
-    public function add(User $user) : void
+    public function persist(User $user) : void
     {
         $this->em->persist($user);
     }
@@ -30,10 +30,5 @@ class UserRepository implements UserRepositoryInterface
                     ->setParameter('email', $email->address())
                     ->getQuery()
                     ->getOneOrNullResult();
-    }
-
-    public function getUser() : User
-    {
-
     }
 }

@@ -49,17 +49,17 @@ class User extends AggregateRoot implements UserInterface
         return new static($email, $name);
     }
 
-    public function getUsername()
+    public function getUsername() : string
     {
         return $this->email->address();
     }
 
-    public function rename(Name $name)
+    public function rename(Name $name) : void
     {
         $this->name = $name;
     }
 
-    public function changePhoneNumber(PhoneNumber $phoneNumber)
+    public function changePhoneNumber(PhoneNumber $phoneNumber) : void
     {
         $this->phoneNumber = $phoneNumber;
     }

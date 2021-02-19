@@ -5,7 +5,6 @@ namespace App\User\Application;
 use App\Core\Infrastructure\Repository\UserRepositoryInterface;
 use App\User\Application\Command\ChangePhoneNumber;
 use App\User\Application\Command\Rename;
-use App\User\Domain\User;
 use App\User\Domain\ValueObject\Name;
 use App\User\Domain\ValueObject\PhoneNumber;
 
@@ -18,17 +17,19 @@ class UserHandler
         $this->repository = $repository;
     }
 
-    public function rename(Rename $renameCommand)
+    public function rename(Rename $renameCommand) : void
     {
         $name = new Name($renameCommand->firstName, $renameCommand->lastName);
-        $renameCommand->user->rename($name);
-        $this->repository->persist($renameCommand->user);
+        $user = $renameCommand->user;
+        $user->rename($name);
+        $this->repository->persist($user);
     }
 
-    public function changePhoneNumber(ChangePhoneNumber $changeNumberCommand)
+    public function changePhoneNumber(ChangePhoneNumber $changeNumberCommand) : void
     {
         $phoneNumber = new PhoneNumber($changeNumberCommand->phoneNumber);
-        $changeNumberCommand->user->changePhoneNumber($phoneNumber);
-        $this->repository->persist($changeNumberCommand->user);
+        $user = $changeNumberCommand->user;
+        $user->changePhoneNumber($phoneNumber);
+        $this->repository->persist($user);
     }
 }

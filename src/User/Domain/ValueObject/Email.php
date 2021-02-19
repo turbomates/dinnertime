@@ -3,7 +3,7 @@
 namespace App\User\Domain\ValueObject;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\Validator\Exception\InvalidArgumentException;
 
 /**
  * @ORM\Embeddable()
@@ -26,10 +26,10 @@ class Email
         return $this->email;
     }
 
-    private function validate(string $email)
+    private function validate(string $email) : bool
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new BadRequestException('not valid email');
+            throw new InvalidArgumentException('not valid email');
         }
 
         return true;

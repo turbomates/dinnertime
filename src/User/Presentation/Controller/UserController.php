@@ -5,8 +5,6 @@ namespace App\User\Presentation\Controller;
 use App\User\Application\Command\ChangePhoneNumber;
 use App\User\Application\Command\Rename;
 use App\User\Application\UserHandler;
-use App\User\Domain\User;
-use App\User\Domain\ValueObject\Email;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,16 +12,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class UserController extends AbstractController
 {
     private UserHandler $handler;
+    private SerializerInterface $serializer;
+    private EntityManagerInterface $em;
 
-    public function __construct(UserHandler $handler,)
+    public function __construct(UserHandler $handler, SerializerInterface $serializer, EntityManagerInterface $em)
     {
         $this->handler = $handler;
+        $this->serializer = $serializer;
+        $this->em = $em;
     }
 
     /**
@@ -53,41 +54,41 @@ class UserController extends AbstractController
     /**
      * @Route("/api/user/rename")
      */
-    public function rename(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, TokenStorageInterface $tokenStorage): Response
+    public function rename(Request $request, TokenStorageInterface $tokenStorage): Response
     {
         $user = $tokenStorage->getToken()->getUser();
-        $renameCommand = $serializer->deserialize($request->getContent(), Rename::class, 'json', [
+        $renameCommand = $this->deserializeJson($request->getContent(), Rename::class, [
             'default_constructor_arguments' => [
                 Rename::class => [
                     'user' => $user
                 ]
             ]
         ]);
-        $em->transactional(function () use ($renameCommand) {
+        $this->em->transactional(function () use ($renameCommand) {
             $this->handler->rename($renameCommand);
         });
 
-        return new JsonResponse();
+        return new JsonResponse(['status' => 'ok']);
     }
 
     /**
      * @Route("/api/user/change-phone-number")
      */
-    public function changePhoneNumber(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, TokenStorageInterface $tokenStorage): Response
+    public function changePhoneNumber(Request $request, TokenStorageInterface $tokenStorage): Response
     {
         $user = $tokenStorage->getToken()->getUser();
-        $changeNumberCommand = $serializer->deserialize($request->getContent(), ChangePhoneNumber::class, 'json', [
+        $changeNumberCommand = $this->deserializeJson($request->getContent(), ChangePhoneNumber::class, [
             'default_constructor_arguments' => [
                 ChangePhoneNumber::class => [
                     'user' => $user
                 ]
             ]
         ]);
-        $em->transactional(function () use ($changeNumberCommand) {
+        $this->em->transactional(function () use ($changeNumberCommand) {
             $this->handler->changePhoneNumber($changeNumberCommand);
         });
 
-        return new JsonResponse();
+        return new JsonResponse(['status' => 'ok']);
     }
 
     /**
@@ -97,12 +98,11 @@ class UserController extends AbstractController
     {
         $user = $tokenStorage->getToken()->getUser();
 
-        return new JsonResponse(['data' => $user]);
+        return new JsonResponse(['status' => 'ok']);
     }
 
     private function deserializeJson(string $json, string $type, array $context)
     {
-        $this->serilizer->deserialize($json, $type, 'json', $context);
+        return $this->serializer->deserialize($json, $type, 'json', $context);
     }
 }
-

@@ -6,6 +6,7 @@ use App\User\Domain\User;
 use App\Core\Infrastructure\Repository\UserRepositoryInterface;
 use App\User\Domain\ValueObject\Email;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -23,12 +24,17 @@ class UserRepository implements UserRepositoryInterface
 
     public function findByEmail(Email $email) : ?User
     {
+        return $this->createQueryBuilder()
+            ->andWhere('u.email.email = :email')
+            ->setParameter('email', $email->address())
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    private function createQueryBuilder() : QueryBuilder
+    {
         return $this->em->createQueryBuilder()
-                    ->select('u')
-                    ->from(User::class, 'u')
-                    ->andWhere('u.email.email = :email')
-                    ->setParameter('email', $email->address())
-                    ->getQuery()
-                    ->getOneOrNullResult();
+            ->select('u')
+            ->from(User::class, 'u');
     }
 }

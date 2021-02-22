@@ -2,9 +2,12 @@
 
 namespace App\User\Presentation\Controller;
 
+use App\Core\Infrastructure\QueryHandler\QueryExecutor;
 use App\User\Application\Command\ChangePhoneNumber;
 use App\User\Application\Command\Rename;
 use App\User\Application\UserHandler;
+use App\User\Domain\ValueObject\UserId;
+use App\User\Infrastructure\QueryObject\UserQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -94,11 +97,11 @@ class UserController extends AbstractController
     /**
      * @Route("/api/user")
      */
-    public function user(TokenStorageInterface $tokenStorage): Response
+    public function user(UserId $userId, QueryExecutor $queryExecutor): Response
     {
-        $user = $tokenStorage->getToken()->getUser();
+        $user = $queryExecutor->execute(new UserQuery($userId));
 
-        return new JsonResponse(['status' => 'ok']);
+        return new JsonResponse($user);
     }
 
     private function deserializeJson(string $json, string $type, array $context)

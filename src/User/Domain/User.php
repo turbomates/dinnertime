@@ -44,6 +44,11 @@ class User extends AggregateRoot implements UserInterface
         $this->name = $name;
     }
 
+    public function id(): UserId
+    {
+        return $this->id;
+    }
+
     public static function create(Email $email, Name $name) : self
     {
         return new static($email, $name);

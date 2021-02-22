@@ -17,15 +17,21 @@ services:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
-            - '../src/Entity/'
+            - '../src/User/Domain/'
             - '../src/Kernel.php'
             - '../src/Tests/'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-    App\Controller\:
-        resource: '../src/Controller/'
+    App\User\Presentation\Controller\:
+        resource: '../src/User/Presentation/Controller/'
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Core\Infrastructure\Repository\UserRepositoryInterface: '@App\User\Infrastructure\Repository\UserRepository'
+
+    App\User\Presentation\ArgumentResolver\UserIdValueResolver:
+        tags:
+            - { name: controller.argument_value_resolver}

@@ -5,3 +5,7 @@ kernel:
 user_controller:
     resource: ../../src/User/Presentation/Controller
     type: annotation
+
+restaurant_controller:
+    resource: ../../src/Restaurant/Presentation/Controller
+    type: annotation

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Picture
 {
     /**
-     * @ORM\Column(name="picture", type="string", length=255)
+     * @ORM\Column(name="path", type="string", length=255)
      */
     private string $path;
 

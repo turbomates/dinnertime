@@ -11,11 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Delivery
 {
     /**
-     * @ORM\Column(type="float", length=10)
+     * @ORM\Embedded(class="App\Restaurant\Domain\ValueObject\Dish\Price")
      */
     private Price $minPrice;
     /**
-     * @ORM\Column(type="float", length=10)
+     * @ORM\Embedded(class="App\Restaurant\Domain\ValueObject\Dish\Price")
      */
     private Price $cost;
 

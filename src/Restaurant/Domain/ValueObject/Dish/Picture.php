@@ -10,12 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Picture
 {
     /**
-     * @ORM\Column(name="picture", type="string", length=100)
+     * @ORM\Column(name="picture", type="string", length=255)
      */
-    private string $picture;
+    private string $path;
 
-    public function __construct(string $picture)
+    public function __construct(string $path)
     {
-        $this->picture = $picture;
+        $this->path = $path;
     }
 }

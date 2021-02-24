@@ -6,6 +6,7 @@ use App\Core\Domain\AggregateRoot;
 use App\Restaurant\Domain\ValueObject\Restaurant\Delivery;
 use App\Restaurant\Domain\ValueObject\Restaurant\Name;
 use App\Restaurant\Domain\ValueObject\Restaurant\RestaurantId;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,15 +26,14 @@ class Restaurant extends AggregateRoot
      */
     private Name $name;
     /**
-     * @ORM\Embedded(class="App\Restaurant\Domain\ValueObject\Restaurant\Delivery", columnPrefix=false)
+     * @ORM\Embedded(class="App\Restaurant\Domain\ValueObject\Restaurant\Delivery", columnPrefix="delivery_")
      * @var Delivery
      */
     private Delivery $delivery;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Restaurant\Domain\Dish", mappedBy="restaurant")
-     * @var Dish
+     * @var Collection
      */
-    private Dish $dishes;
-
+    private Collection $dishes;
 }

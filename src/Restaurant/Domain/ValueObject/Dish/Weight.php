@@ -10,11 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Weight
 {
     /**
-     * @ORM\Column(name="weight", type="float", length=5)
+     * @ORM\Column(name="weight", type="smallint", length=5)
      */
-    private float $weight;
+    private int $weight;
 
-    public function __construct(float $weight)
+    public function __construct(int $weight)
     {
         $this->weight = $weight;
     }

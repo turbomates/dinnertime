@@ -36,7 +36,7 @@ class Dish
      * @ORM\Embedded(class="App\Restaurant\Domain\ValueObject\Dish\Picture", columnPrefix=false)
      * @var Picture
      */
-    private Picture $picture;
+    private Picture $path;
     /**
      * @ORM\Embedded(class="App\Restaurant\Domain\ValueObject\Dish\Weight", columnPrefix=false)
      * @var Weight

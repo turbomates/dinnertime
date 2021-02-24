@@ -10,12 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Price
 {
     /**
-     * @ORM\Column(name="price", type="float", length=10)
+     * @ORM\Column(name="amount", type="float", length=10)
      */
-    private float $price;
+    private float $amount;
 
-    public function __construct(float $price)
+    public function __construct(float $amount)
     {
-        $this->price = $price;
+        $this->amount = $amount;
     }
 }

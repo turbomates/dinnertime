@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Name
 {
     /**
-     * @ORM\Column(name="name", type="string", length=100)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private string $name;
 

@@ -2,9 +2,9 @@
 
 namespace App\User\Application;
 
-use App\Core\Infrastructure\Repository\UserRepositoryInterface;
 use App\User\Application\Command\ChangePhoneNumber;
 use App\User\Application\Command\Rename;
+use App\User\Domain\UserRepositoryInterface;
 use App\User\Domain\ValueObject\Name;
 use App\User\Domain\ValueObject\PhoneNumber;
 

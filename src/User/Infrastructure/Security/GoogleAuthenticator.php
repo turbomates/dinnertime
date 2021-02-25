@@ -2,8 +2,8 @@
 
 namespace App\User\Infrastructure\Security;
 
-use App\Core\Infrastructure\Repository\UserRepositoryInterface;
 use App\User\Domain\User;
+use App\User\Domain\UserRepositoryInterface;
 use App\User\Domain\ValueObject\Email;
 use App\User\Domain\ValueObject\Name;
 use Doctrine\ORM\EntityManagerInterface;

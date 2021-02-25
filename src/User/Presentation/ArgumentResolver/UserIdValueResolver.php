@@ -2,7 +2,7 @@
 
 namespace App\User\Presentation\ArgumentResolver;
 
-use App\Core\Infrastructure\Repository\UserRepositoryInterface;
+use App\User\Domain\UserRepositoryInterface;
 use App\User\Domain\ValueObject\UserId;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;

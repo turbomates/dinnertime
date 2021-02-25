@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Infrastructure\Repository;
+namespace App\User\Domain;
 
 use App\User\Domain\User;
 use App\User\Domain\ValueObject\Email;

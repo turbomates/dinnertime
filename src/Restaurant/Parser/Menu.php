@@ -2,7 +2,7 @@
 
 namespace App\Restaurant\Parser;
 
-class Dish
+class Menu
 {
     public string $dishName;
     public string $description;

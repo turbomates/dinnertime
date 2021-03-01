@@ -2,24 +2,25 @@
 
 namespace App\Restaurant\Parser;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Restaurant\Parser\Collection\DishCollection;
 use Symfony\Component\DomCrawler\Crawler;
 
 class GarageParser implements ParserInterface
 {
     private const DISH_URL = 'https://garage.by/index.php?route=product/category&path=279_578';
     private const RESTAURANT_URL = 'https://garage.by/how-order';
+    private const RESTAURANT_NAME = 'GARAGE';
 
     public function __construct()
     {
 
     }
 
-    private function dish() : ArrayCollection
+    private function dish() : DishCollection
     {
         $html = file_get_contents(self::DISH_URL);
         $crawler = new Crawler($html);
-        $dishes= new ArrayCollection();
+        $dishes= new DishCollection();
         $crawler->filter('.product-wrappe')->each(function ($node, $i) use ($dishes)
         {
             $name = $node->filter('h4')->text();
@@ -27,7 +28,7 @@ class GarageParser implements ParserInterface
             $weight = preg_replace('/[^0-9]/', '', $node->filter('.weight')->text());
             $price = preg_replace('/[^0-9.]/', '', $node->filter('#price')->text());
             $image = $node->filter('.img-responsive')->image()->getUri();
-            $dishes->add(new Dish($name, $description, $weight, $price, $image));
+            $dishes->add(new Menu($name, $description, $weight, $price, $image));
         });
 
         return $dishes;
@@ -42,17 +43,8 @@ class GarageParser implements ParserInterface
         return $minDelivery;
     }
 
-    private function restaurantName() : string
+    public function parse() : CreateRestaurant
     {
-        $html = file_get_contents(self::RESTAURANT_URL);
-        $crawler = new Crawler($html);
-        $restaurantName = preg_replace('/[^A-Z]/', '', $crawler->filter('.MsoNormal')->eq(0)->text());
-
-        return $restaurantName;
-    }
-
-    public function parse() : Restaurant
-    {
-       return new Restaurant($this->restaurantName(), $this->delivery(), 0, $this->dish());
+       return new CreateRestaurant (self::RESTAURANT_NAME, $this->delivery(), 0, $this->dish());
     }
 }

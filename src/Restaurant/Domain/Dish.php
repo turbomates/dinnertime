@@ -53,4 +53,15 @@ class Dish
      * @var Restaurant
      */
     private Restaurant $restaurant;
+
+    public function __construct(Name $name, Price $price, Picture $path, Weight $weight, Description $description, Restaurant $restaurant)
+    {
+        $this->id = new DishId();
+        $this->name = $name;
+        $this->price = $price;
+        $this->path = $path;
+        $this->weight = $weight;
+        $this->description = $description;
+        $this->restaurant = $restaurant;
+    }
 }

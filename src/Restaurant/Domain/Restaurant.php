@@ -6,7 +6,7 @@ use App\Core\Domain\AggregateRoot;
 use App\Restaurant\Domain\ValueObject\Restaurant\Delivery;
 use App\Restaurant\Domain\ValueObject\Restaurant\Name;
 use App\Restaurant\Domain\ValueObject\Restaurant\RestaurantId;
-use Doctrine\Common\Collections\Collection;
+use App\Restaurant\Parser\Collection\DishCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,7 +33,20 @@ class Restaurant extends AggregateRoot
 
     /**
      * @ORM\OneToMany(targetEntity="App\Restaurant\Domain\Dish", mappedBy="restaurant")
-     * @var Collection
+     * @var DishCollection
      */
-    private Collection $dishes;
+    private DishCollection $dishes;
+
+    public function __construct(Name $name, Delivery $delivery, DishCollection $dishes)
+    {
+        $this->id = new RestaurantId();
+        $this->delivery = $delivery;
+        $this->name = $name;
+        $this->dishes = $dishes;
+    }
+
+    public function id() : RestaurantId
+    {
+        return $this->id;
+    }
 }

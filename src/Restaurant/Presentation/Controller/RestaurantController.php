@@ -3,6 +3,7 @@
 namespace App\Restaurant\Presentation\Controller;
 
 use App\Restaurant\Parser\GarageParser;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

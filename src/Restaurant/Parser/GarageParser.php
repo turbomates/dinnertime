@@ -7,61 +7,52 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class GarageParser implements ParserInterface
 {
-    private ArrayCollection $dishes;
+    private const DISH_URL = 'https://garage.by/index.php?route=product/category&path=279_578';
+    private const RESTAURANT_URL = 'https://garage.by/how-order';
 
     public function __construct()
     {
-        $this->dishes = new ArrayCollection();
+
     }
 
-    public function dish() : void
+    private function dish() : ArrayCollection
     {
-        $url = 'https://garage.by/index.php?route=product/category&path=279_578';
-        $html = file_get_contents($url);
+        $html = file_get_contents(self::DISH_URL);
         $crawler = new Crawler($html);
-        $crawler->filter('.product-wrappe')->each(function ($node, $i){
+        $dishes= new ArrayCollection();
+        $crawler->filter('.product-wrappe')->each(function ($node, $i) use ($dishes)
+        {
             $name = $node->filter('h4')->text();
             $description = $node->filter('.decr')->text();
-            $weight = $node->filter('.weight')->text();
-            $price = substr($node->filter('#price')->text(), 0, -4);
+            $weight = preg_replace('/[^0-9]/', '', $node->filter('.weight')->text());
+            $price = preg_replace('/[^0-9.]/', '', $node->filter('#price')->text());
             $image = $node->filter('.img-responsive')->image()->getUri();
+            $dishes->add(new Dish($name, $description, $weight, $price, $image));
         });
+
+        return $dishes;
     }
 
-    public function delivery() : string
+    private function delivery() : string
     {
-        $url = 'https://garage.by/how-order';
-        $html = file_get_contents($url);
+        $html = file_get_contents(self::RESTAURANT_URL);
         $crawler = new Crawler($html);
-        $minDelivery = substr($crawler->filter('.row > .MsoNormal')->eq(2)->text(), -13, -8);
+        $minDelivery = substr(preg_replace('/[^0-9.]/', '', $crawler->filter('.row > .MsoNormal')->eq(2)->text()), 0,-1);
 
         return $minDelivery;
     }
 
-    public function restaurantName() : string
+    private function restaurantName() : string
     {
-        $url = 'https://garage.by/how-order';
-        $html = file_get_contents($url);
+        $html = file_get_contents(self::RESTAURANT_URL);
         $crawler = new Crawler($html);
-        $restaurantName = substr($crawler->filter('.MsoNormal')->eq(0)->text(), 28, -64);
+        $restaurantName = preg_replace('/[^A-Z]/', '', $crawler->filter('.MsoNormal')->eq(0)->text());
 
         return $restaurantName;
     }
 
     public function parse() : Restaurant
     {
-        $url = 'https://garage.by/menu/domashnjajaeda1130-2300/';
-        $html = file_get_contents($url);
-        $crawler = new Crawler($html);
-        $crawler->filter('.product-wrappe')->each(function ($node, $i){
-            $name = $node->filter('h4')->text();
-            $description = $node->filter('.decr')->text();
-            $weight = $node->filter('.weight')->text();
-            $price = substr($node->filter('#price')->text(), 0, -4);
-            $image = $node->filter('.img-responsive')->image()->getUri();
-            $this->dishes->add(new Dish($name, $description, $weight, $price, $image));
-        });
-
-       return new Restaurant($this->restaurantName(), $this->delivery(), 0, $this->dishes);
+       return new Restaurant($this->restaurantName(), $this->delivery(), 0, $this->dish());
     }
 }

@@ -3,8 +3,8 @@
 namespace App\Restaurant\Presentation\Controller;
 
 use App\Restaurant\Application\RestaurantHandler;
-use App\Restaurant\Parser\GarageParser;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Restaurant\Parser\Garage;
+use App\Restaurant\Parser\Tempo;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class RestaurantController extends AbstractController
     /**
      * @Route("/garage/parser")
      */
-    public function garageParser(Request $request, GarageParser $garageParser) : Response
+    public function garageParser(Request $request, Garage $garageParser) : Response
     {
        $restaurant = $garageParser->parse();
        $this->handler->handlerParseRestaurant($restaurant);
@@ -33,8 +33,9 @@ class RestaurantController extends AbstractController
     /**
      * @Route("/tempo/parser")
      */
-    public function tempoParser(Request $request) : Response
+    public function tempoParser(Request $request, Tempo $tempoParser) : Response
     {
+        $restaurant = $tempoParser->parse();
         return new JsonResponse(['status' => 'ok']);
     }
 }

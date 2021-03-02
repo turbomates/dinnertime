@@ -2,36 +2,31 @@
 
 namespace App\Restaurant\Parser;
 
-use App\Restaurant\Parser\Collection\DishCollection;
+use App\Restaurant\Parser\Collection\MenuCollection;
 use Symfony\Component\DomCrawler\Crawler;
 
-class GarageParser implements ParserInterface
+class Garage implements Parser
 {
     private const DISH_URL = 'https://garage.by/index.php?route=product/category&path=279_578';
     private const RESTAURANT_URL = 'https://garage.by/how-order';
     private const RESTAURANT_NAME = 'GARAGE';
 
-    public function __construct()
-    {
-
-    }
-
-    private function dish() : DishCollection
+    private function dish() : MenuCollection
     {
         $html = file_get_contents(self::DISH_URL);
         $crawler = new Crawler($html);
-        $dishes= new DishCollection();
-        $crawler->filter('.product-wrappe')->each(function ($node, $i) use ($dishes)
+        $menu = new MenuCollection();
+        $crawler->filter('.product-wrappe')->each(function ($node, $i) use ($menu)
         {
             $name = $node->filter('h4')->text();
             $description = $node->filter('.decr')->text();
             $weight = preg_replace('/[^0-9]/', '', $node->filter('.weight')->text());
             $price = preg_replace('/[^0-9.]/', '', $node->filter('#price')->text());
             $image = $node->filter('.img-responsive')->image()->getUri();
-            $dishes->add(new Menu($name, $description, $weight, $price, $image));
+            $menu->add(new Menu($name, $description, $weight, $price, $image));
         });
 
-        return $dishes;
+        return $menu;
     }
 
     private function delivery() : string

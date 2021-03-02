@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Restaurant\Parser\Collection;
+namespace App\Restaurant\Domain\Collection;
+
+use App\Restaurant\Domain\Dish;
 
 class DishCollection implements \IteratorAggregate
 {
@@ -11,15 +13,10 @@ class DishCollection implements \IteratorAggregate
         return new \ArrayIterator($this->dishes);
     }
 
-    public function add($dish) : bool
+    public function add(Dish $dishes) : bool
     {
-        $this->dishes[] = $dish;
+        $this->dishes[] = $dishes;
 
         return true;
-    }
-
-    public function getDishes() : array
-    {
-        return $this->dishes;
     }
 }

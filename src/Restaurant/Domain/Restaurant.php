@@ -3,10 +3,15 @@
 namespace App\Restaurant\Domain;
 
 use App\Core\Domain\AggregateRoot;
+use App\Restaurant\Domain\ValueObject\Dish\Description;
+use App\Restaurant\Domain\ValueObject\Dish\Picture;
+use App\Restaurant\Domain\ValueObject\Dish\Price;
+use App\Restaurant\Domain\ValueObject\Dish\Weight;
 use App\Restaurant\Domain\ValueObject\Restaurant\Delivery;
 use App\Restaurant\Domain\ValueObject\Restaurant\Name;
 use App\Restaurant\Domain\ValueObject\Restaurant\RestaurantId;
-use App\Restaurant\Parser\Collection\DishCollection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,23 +35,28 @@ class Restaurant extends AggregateRoot
      * @var Delivery
      */
     private Delivery $delivery;
-
     /**
-     * @ORM\OneToMany(targetEntity="App\Restaurant\Domain\Dish", mappedBy="restaurant")
-     * @var DishCollection
+     * @ORM\OneToMany(targetEntity="App\Restaurant\Domain\Dish", mappedBy="restaurant", cascade={"persist", "remove"})
+     * @var Collection
      */
-    private DishCollection $dishes;
+    private Collection $dishes;
 
-    public function __construct(Name $name, Delivery $delivery, DishCollection $dishes)
+    public function __construct(Name $name, Delivery $delivery)
     {
         $this->id = new RestaurantId();
         $this->delivery = $delivery;
         $this->name = $name;
-        $this->dishes = $dishes;
+        $this->dishes = new ArrayCollection();
     }
 
     public function id() : RestaurantId
     {
         return $this->id;
+    }
+
+    public function addDish(string $name, float $price, string $path, float $weight, string $description) : void
+    {
+        $this->dishes->add(new Dish(new ValueObject\Dish\Name($name), new Price($price), new Picture($path),
+            new Weight($weight), new Description($description), $this));
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Restaurant\Parser;
 
-interface ParserInterface
+interface Parser
 {
     public function parse();
 }

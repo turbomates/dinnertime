@@ -6,5 +6,5 @@ use Doctrine\ORM\EntityManagerInterface;
 
 interface QueryObjectInterface
 {
-    public function execute(EntityManagerInterface $em);
+    public function execute(EntityManagerInterface $em) : array;
 }

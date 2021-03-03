@@ -2,16 +2,16 @@
 
 namespace App\Restaurant\Parser;
 
-use App\Restaurant\Parser\Collection\MenuCollection;
+use App\Restaurant\Parser\Collection\Menu;
 
 class CreateRestaurant
 {
     public string $name;
     public string $minDeliveryPrice;
     public string $deliveryCost;
-    public MenuCollection $menu;
+    public Menu $menu;
 
-    public function __construct(string $name, string $minDeliveryPrice, string $deliveryCost, MenuCollection $menu)
+    public function __construct(string $name, string $minDeliveryPrice, string $deliveryCost, Menu $menu)
     {
         $this->name = $name;
         $this->minDeliveryPrice = $minDeliveryPrice;

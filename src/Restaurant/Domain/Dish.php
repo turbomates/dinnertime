@@ -48,7 +48,7 @@ class Dish
      */
     private Description $description;
     /**
-     * @ORM\ManyToOne(targetEntity="App\Restaurant\Domain\Restaurant", inversedBy="dishes")
+     * @ORM\ManyToOne(targetEntity="App\Restaurant\Domain\Restaurant", inversedBy="menu")
      * @JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=false)
      * @var Restaurant
      */

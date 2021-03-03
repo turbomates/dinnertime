@@ -7,7 +7,7 @@ use App\User\Domain\ValueObject\Email;
 
 interface UserRepositoryInterface
 {
-    public function persist(User $user);
+    public function persist(User $user) : void;
 
-    public function findByEmail(Email $email);
+    public function findByEmail(Email $email) : ?User;
 }

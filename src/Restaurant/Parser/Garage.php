@@ -2,7 +2,7 @@
 
 namespace App\Restaurant\Parser;
 
-use App\Restaurant\Parser\Collection\MenuCollection;
+use App\Restaurant\Parser\Collection\Menu;
 use Symfony\Component\DomCrawler\Crawler;
 
 class Garage implements Parser
@@ -11,11 +11,11 @@ class Garage implements Parser
     private const RESTAURANT_URL = 'https://garage.by/how-order';
     private const RESTAURANT_NAME = 'GARAGE';
 
-    private function dish() : MenuCollection
+    private function menu() : Menu
     {
         $html = file_get_contents(self::DISH_URL);
         $crawler = new Crawler($html);
-        $menu = new MenuCollection();
+        $menu = new Menu();
         $crawler->filter('.product-wrappe')->each(function ($node, $i) use ($menu)
         {
             $name = $node->filter('h4')->text();
@@ -23,7 +23,7 @@ class Garage implements Parser
             $weight = preg_replace('/[^0-9]/', '', $node->filter('.weight')->text());
             $price = preg_replace('/[^0-9.]/', '', $node->filter('#price')->text());
             $image = $node->filter('.img-responsive')->image()->getUri();
-            $menu->add(new Menu($name, $description, $weight, $price, $image));
+            $menu->add(new Dish($name, $description, $weight, $price, $image));
         });
 
         return $menu;
@@ -33,13 +33,12 @@ class Garage implements Parser
     {
         $html = file_get_contents(self::RESTAURANT_URL);
         $crawler = new Crawler($html);
-        $minDelivery = substr(preg_replace('/[^0-9.]/', '', $crawler->filter('.row > .MsoNormal')->eq(2)->text()), 0,-1);
 
-        return $minDelivery;
+        return substr(preg_replace('/[^0-9.]/', '', $crawler->filter('.row > .MsoNormal')->eq(2)->text()), 0,-1);
     }
 
     public function parse() : CreateRestaurant
     {
-       return new CreateRestaurant (self::RESTAURANT_NAME, $this->delivery(), 0, $this->dish());
+       return new CreateRestaurant (self::RESTAURANT_NAME, $this->delivery(), 0, $this->menu());
     }
 }

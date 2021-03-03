@@ -2,9 +2,9 @@
 
 namespace App\Restaurant\Parser\Collection;
 
-use App\Restaurant\Parser\Menu;
+use App\Restaurant\Parser\Dish;
 
-class MenuCollection implements \IteratorAggregate
+class Menu implements \IteratorAggregate
 {
     public array $menu = [];
 
@@ -13,7 +13,7 @@ class MenuCollection implements \IteratorAggregate
         return new \ArrayIterator($this->menu);
     }
 
-    public function add(Menu $menu) : bool
+    public function add(Dish $menu) : bool
     {
         $this->menu[] = $menu;
 

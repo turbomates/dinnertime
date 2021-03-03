@@ -6,6 +6,7 @@ use App\Restaurant\Domain\Restaurant;
 use App\Restaurant\Domain\RestaurantRepositoryInterface;
 use App\Restaurant\Domain\ValueObject\Restaurant\Name;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 
 class RestaurantRepository implements RestaurantRepositoryInterface
 {
@@ -23,6 +24,17 @@ class RestaurantRepository implements RestaurantRepositoryInterface
 
     public function findByName(Name $name) : Restaurant
     {
+        return $this->createQueryBuilder()
+            ->andWhere('r.name.name = :name')
+            ->setParameter('name', $name->getName())
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 
+    private function createQueryBuilder() : QueryBuilder
+    {
+        return $this->em->createQueryBuilder()
+            ->select('r')
+            ->from(Restaurant::class, 'r');
     }
 }

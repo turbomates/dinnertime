@@ -19,6 +19,7 @@ class RestaurantController extends AbstractController
     {
         $this->handler = $handler;
     }
+
     /**
      * @Route("/garage/parser")
      */

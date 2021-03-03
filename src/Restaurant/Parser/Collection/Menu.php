@@ -6,22 +6,17 @@ use App\Restaurant\Parser\Dish;
 
 class Menu implements \IteratorAggregate
 {
-    public array $menu = [];
+    public array $dish = [];
 
     public function getIterator() : \ArrayIterator
     {
-        return new \ArrayIterator($this->menu);
+        return new \ArrayIterator($this->dish);
     }
 
-    public function add(Dish $menu) : bool
+    public function add(Dish $dish) : bool
     {
-        $this->menu[] = $menu;
+        $this->dish[] = $dish;
 
         return true;
-    }
-
-    public function getDishes() : array
-    {
-        return $this->menu;
     }
 }

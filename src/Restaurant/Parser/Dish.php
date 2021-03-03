@@ -6,11 +6,11 @@ class Dish
 {
     public string $dishName;
     public string $description;
-    public string $weight;
-    public string $price;
+    public int $weight;
+    public float $price;
     public string $image;
 
-    public function __construct(string $dishName, string $description, string $weight, string $price, string $image)
+    public function __construct(string $dishName, string $description, int $weight, float $price, string $image)
     {
         $this->dishName = $dishName;
         $this->description = $description;

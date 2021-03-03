@@ -37,7 +37,7 @@ class Restaurant extends AggregateRoot
      */
     private Delivery $delivery;
     /**
-     * @ORM\OneToMany(targetEntity="App\Restaurant\Domain\Dish", mappedBy="restaurant", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Restaurant\Domain\Dish", mappedBy="restaurant", cascade={"persist", "remove"}, orphanRemoval=true)
      * @var Collection
      */
     private Collection $menu;
@@ -59,5 +59,21 @@ class Restaurant extends AggregateRoot
     {
         $this->menu->add(new Dish(new DishName($name), new Price($price), new Picture($path),
             new Weight($weight), new Description($description), $this));
+    }
+
+    public function update(Name $name, Delivery $delivery) : void
+    {
+        $this->name = $name;
+        $this->delivery = $delivery;
+    }
+
+    public function removeDish(Dish $dish) : void
+    {
+        $this->menu->removeElement($dish);
+    }
+
+    public function getMenu() : Collection
+    {
+        return $this->menu;
     }
 }

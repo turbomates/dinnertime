@@ -22,7 +22,7 @@ class RestaurantRepository implements RestaurantRepositoryInterface
         $this->em->persist($restaurant);
     }
 
-    public function findByName(Name $name) : Restaurant
+    public function findByName(Name $name) : ?Restaurant
     {
         return $this->createQueryBuilder()
             ->andWhere('r.name.name = :name')

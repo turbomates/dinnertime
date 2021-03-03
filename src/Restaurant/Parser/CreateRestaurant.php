@@ -7,11 +7,11 @@ use App\Restaurant\Parser\Collection\Menu;
 class CreateRestaurant
 {
     public string $name;
-    public string $minDeliveryPrice;
-    public string $deliveryCost;
+    public float $minDeliveryPrice;
+    public float $deliveryCost;
     public Menu $menu;
 
-    public function __construct(string $name, string $minDeliveryPrice, string $deliveryCost, Menu $menu)
+    public function __construct(string $name, float $minDeliveryPrice, float $deliveryCost, Menu $menu)
     {
         $this->name = $name;
         $this->minDeliveryPrice = $minDeliveryPrice;

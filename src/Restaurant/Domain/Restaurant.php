@@ -54,7 +54,7 @@ class Restaurant extends AggregateRoot
     {
         return $this->id;
     }
-
+    //I don't finished yet
     public function addDish(string $name, float $price, string $path, float $weight, string $description) : void
     {
         $this->menu->add(new Dish(new DishName($name), new Price($price), new Picture($path),
@@ -66,14 +66,26 @@ class Restaurant extends AggregateRoot
         $this->name = $name;
         $this->delivery = $delivery;
     }
-
-    public function removeDish(Dish $dish) : void
+    //I don't finished yet
+    private function removeDish(Menu $menu) : void
     {
-        $this->menu->removeElement($dish);
+        $this->menu->removeElement($menu);
     }
 
     public function getMenu() : Collection
     {
         return $this->menu;
+    }
+
+    public static function create(string $name, float $minDelivery, float $cost)
+    {
+        return new Restaurant(new Name($name), new Delivery(new Price($minDelivery), new Price($cost)));
+    }
+
+    //I don't finished yet
+    public function changeMenu(Menu $menu)
+    {
+        $this->removeDish($menu);
+       // $this->addDish();
     }
 }

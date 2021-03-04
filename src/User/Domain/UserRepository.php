@@ -4,7 +4,7 @@ namespace App\User\Domain;
 
 use App\User\Domain\ValueObject\Email;
 
-interface UserRepositoryInterface
+interface UserRepository
 {
     public function persist(User $user) : void;
 

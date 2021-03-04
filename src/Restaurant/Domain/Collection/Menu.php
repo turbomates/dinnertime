@@ -11,7 +11,7 @@ class Menu extends ArrayTypeCollection
     public function isSupport($element) : bool
     {
         if (!is_object($element) && (get_class($element) !== Dish::class)){
-           throw new Exception('the object cannot will added to the collection');
+           throw new Exception('the object cannot will added or remove to the collection');
         }
 
         return true;

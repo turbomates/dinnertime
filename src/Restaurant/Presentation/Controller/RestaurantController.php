@@ -2,7 +2,6 @@
 
 namespace App\Restaurant\Presentation\Controller;
 
-use App\Restaurant\Application\RestaurantHandler;
 use App\Restaurant\Parser\Garage;
 use App\Restaurant\Parser\Tempo;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,24 +13,22 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RestaurantController extends AbstractController
 {
-    private RestaurantHandler $handler;
     private EntityManagerInterface $em;
 
-    public function __construct(RestaurantHandler $handler, EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em)
     {
-        $this->handler = $handler;
         $this->em = $em;
     }
 
+    //I don't finished yet
     /**
      * @Route("/garage/parser")
      */
     public function garageParser(Request $request, Garage $garageParser) : Response
     {
-       $restaurant = $garageParser->parse();
-       $this->handler->handlerParseRestaurant($restaurant);
+        $restaurant = $garageParser->parse();
 
-       return new JsonResponse(['status' => 'ok']);
+        return new JsonResponse(['status' => 'ok']);
     }
 
     /**

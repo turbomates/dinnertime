@@ -3,7 +3,7 @@
 namespace App\Restaurant\Infrastructure\Repository;
 
 use App\Restaurant\Domain\Restaurant;
-use App\Restaurant\Domain\RestaurantRepositoryInterface;
+use App\Restaurant\Domain\RestaurantRepository as RestaurantRepositoryInterface;
 use App\Restaurant\Domain\ValueObject\Restaurant\Name;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;

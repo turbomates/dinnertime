@@ -32,6 +32,8 @@ abstract class ArrayTypeCollection extends ArrayCollection
 
     public function removeElement($element) : bool
     {
+        $this->isSupport($element);
+
         return parent::removeElement($element);
     }
 }

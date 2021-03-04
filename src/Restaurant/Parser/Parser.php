@@ -4,5 +4,5 @@ namespace App\Restaurant\Parser;
 
 interface Parser
 {
-    public function parse(): CreateRestaurant;
+    public function parse();
 }

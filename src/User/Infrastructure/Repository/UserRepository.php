@@ -3,7 +3,7 @@
 namespace App\User\Infrastructure\Repository;
 
 use App\User\Domain\User;
-use App\User\Domain\UserRepositoryInterface;
+use App\User\Domain\UserRepository as UserRepositoryInterface;
 use App\User\Domain\ValueObject\Email;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;

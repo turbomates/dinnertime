@@ -3,7 +3,7 @@
 namespace App\User\Infrastructure\Security;
 
 use App\User\Domain\User;
-use App\User\Domain\UserRepositoryInterface;
+use App\User\Domain\UserRepository;
 use App\User\Domain\ValueObject\Email;
 use App\User\Domain\ValueObject\Name;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,9 +25,9 @@ class GoogleAuthenticator extends SocialAuthenticator
     private ClientRegistry $clientRegistry;
     private EntityManagerInterface $em;
     private RouterInterface $router;
-    private UserRepositoryInterface $repository;
+    private UserRepository $repository;
 
-    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $em, RouterInterface $router, UserRepositoryInterface $repository)
+    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $em, RouterInterface $router, UserRepository $repository)
     {
         $this->clientRegistry = $clientRegistry;
         $this->em = $em;

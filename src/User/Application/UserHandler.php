@@ -4,15 +4,15 @@ namespace App\User\Application;
 
 use App\User\Application\Command\ChangePhoneNumber;
 use App\User\Application\Command\Rename;
-use App\User\Domain\UserRepositoryInterface;
+use App\User\Domain\UserRepository;
 use App\User\Domain\ValueObject\Name;
 use App\User\Domain\ValueObject\PhoneNumber;
 
 class UserHandler
 {
-    private UserRepositoryInterface $repository;
+    private UserRepository $repository;
 
-    public function __construct(UserRepositoryInterface $repository)
+    public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
     }

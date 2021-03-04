@@ -4,7 +4,7 @@ namespace App\Restaurant\Domain;
 
 use App\Restaurant\Domain\ValueObject\Restaurant\Name;
 
-interface RestaurantRepositoryInterface
+interface RestaurantRepository
 {
     public function persist(Restaurant $restaurant) : void;
 

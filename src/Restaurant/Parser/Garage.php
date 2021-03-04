@@ -2,7 +2,9 @@
 
 namespace App\Restaurant\Parser;
 
-use App\Restaurant\Parser\Collection\Menu;
+use App\Restaurant\Domain\Collection\Menu;
+use App\Restaurant\Domain\RestaurantRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
 class Garage implements Parser
@@ -10,6 +12,16 @@ class Garage implements Parser
     private const DISH_URL = 'https://garage.by/index.php?route=product/category&path=279_578';
     private const RESTAURANT_URL = 'https://garage.by/how-order';
     private const RESTAURANT_NAME = 'GARAGE';
+    private RestaurantRepository $repository;
+    private EntityManagerInterface $em;
+    private UpsertRestaurant $restaurant;
+
+    public function __construct(RestaurantRepository $repository, EntityManagerInterface $em, UpsertRestaurant $restaurant)
+    {
+        $this->repository = $repository;
+        $this->em = $em;
+        $this->restaurant = $restaurant;
+    }
 
     private function menu() : Menu
     {
@@ -37,8 +49,15 @@ class Garage implements Parser
         return substr(preg_replace('/[^0-9.]/', '', $crawler->filter('.row > .MsoNormal')->eq(2)->text()), 0,-1);
     }
 
-    public function parse() : CreateRestaurant
+    //I don't finished yet
+    public function parse()
     {
-       return new CreateRestaurant (self::RESTAURANT_NAME, $this->delivery(), 0, $this->menu());
+        $restaurant = $this->restaurant->upsert(self::RESTAURANT_NAME, $this->delivery(), 0);
+        $restaurant->changeMenu($this->menu());
+        $this->repository->persist($restaurant);
+        $this->em->flush();
     }
+
+
+
 }

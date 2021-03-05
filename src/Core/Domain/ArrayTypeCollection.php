@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 abstract class ArrayTypeCollection extends ArrayCollection
 {
+    abstract function isSupport($element) : bool;
+
     public function add($element) : bool
     {
         $this->isSupport($element);
@@ -13,21 +15,11 @@ abstract class ArrayTypeCollection extends ArrayCollection
         return parent::add($element);
     }
 
-    abstract function isSupport($element) : bool;
-
-    public function set($key, $value)
+    public function set($key, $value) : bool
     {
+        $this->isSupport($value);
+
         parent::set($key, $value);
-    }
-
-    public function remove($key)
-    {
-        return parent::remove($key);
-    }
-
-    public function clear()
-    {
-        parent::clear();
     }
 
     public function removeElement($element) : bool

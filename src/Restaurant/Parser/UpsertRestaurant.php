@@ -18,6 +18,7 @@ class UpsertRestaurant
         $this->repository = $repository;
     }
 
+    //I think about name
     public function upsert(string $name, float $minDelivery, float $cost): Restaurant
     {
         if (!$restaurant = $this->repository->findByName(new Name($name))){

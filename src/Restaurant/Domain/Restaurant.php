@@ -4,11 +4,7 @@ namespace App\Restaurant\Domain;
 
 use App\Core\Domain\AggregateRoot;
 use App\Restaurant\Domain\Collection\Menu;
-use App\Restaurant\Domain\ValueObject\Dish\Description;
-use App\Restaurant\Domain\ValueObject\Dish\Picture;
 use App\Restaurant\Domain\ValueObject\Dish\Price;
-use App\Restaurant\Domain\ValueObject\Dish\Weight;
-use App\Restaurant\Domain\ValueObject\Dish\Name as DishName;
 use App\Restaurant\Domain\ValueObject\Restaurant\Delivery;
 use App\Restaurant\Domain\ValueObject\Restaurant\Name;
 use App\Restaurant\Domain\ValueObject\Restaurant\RestaurantId;
@@ -54,38 +50,20 @@ class Restaurant extends AggregateRoot
     {
         return $this->id;
     }
-    //I don't finished yet
-    public function addDish(string $name, float $price, string $path, float $weight, string $description) : void
-    {
-        $this->menu->add(new Dish(new DishName($name), new Price($price), new Picture($path),
-            new Weight($weight), new Description($description), $this));
-    }
 
     public function update(Name $name, Delivery $delivery) : void
     {
         $this->name = $name;
         $this->delivery = $delivery;
     }
-    //I don't finished yet
-    private function removeDish(Menu $menu) : void
+
+    public function changeMenu(Menu $menu) : void
     {
-        $this->menu->removeElement($menu);
+        $this->menu = $menu;
     }
 
-    public function getMenu() : Collection
-    {
-        return $this->menu;
-    }
-
-    public static function create(string $name, float $minDelivery, float $cost)
+    public static function create(string $name, float $minDelivery, float $cost) : Restaurant
     {
         return new Restaurant(new Name($name), new Delivery(new Price($minDelivery), new Price($cost)));
-    }
-
-    //I don't finished yet
-    public function changeMenu(Menu $menu)
-    {
-        $this->removeDish($menu);
-       // $this->addDish();
     }
 }

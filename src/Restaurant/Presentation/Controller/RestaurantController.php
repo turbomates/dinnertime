@@ -20,13 +20,14 @@ class RestaurantController extends AbstractController
         $this->em = $em;
     }
 
-    //I don't finished yet
     /**
      * @Route("/garage/parser")
      */
     public function garageParser(Request $request, Garage $garageParser) : Response
     {
-        $restaurant = $garageParser->parse();
+        $this->em->transactional(function () use ($garageParser){
+            $garageParser->parse();
+        });
 
         return new JsonResponse(['status' => 'ok']);
     }
@@ -36,7 +37,9 @@ class RestaurantController extends AbstractController
      */
     public function tempoParser(Request $request, Tempo $tempoParser) : Response
     {
-        $restaurant = $tempoParser->parse();
+        $this->em->transactional(function () use ($tempoParser){
+           $tempoParser->parse();
+        });
 
         return new JsonResponse(['status' => 'ok']);
     }

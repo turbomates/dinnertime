@@ -35,3 +35,14 @@ services:
     App\User\Presentation\ArgumentResolver\UserIdValueResolver:
         tags:
             - { name: controller.argument_value_resolver}
+
+    _instanceof:
+        App\Restaurant\Parser\Parser:
+            tags: ['parser']
+
+    App\Restaurant\Presentation\CLI\ParserHandler:
+        arguments:
+            $parsers: !tagged parser
+
+
+

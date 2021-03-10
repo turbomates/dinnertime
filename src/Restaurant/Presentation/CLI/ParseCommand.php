@@ -2,6 +2,7 @@
 
 namespace App\Restaurant\Presentation\CLI;
 
+use App\Restaurant\Application\Importer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,10 +11,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ParseCommand extends Command
 {
     public static $defaultName = 'app:parser';
-    private ParserHandler $parserManager;
+    private Importer $parserManager;
     private EntityManagerInterface $em;
 
-    public function __construct(ParserHandler $parserManager, EntityManagerInterface $em)
+    public function __construct(Importer $parserManager, EntityManagerInterface $em)
     {
         $this->parserManager = $parserManager;
         $this->em = $em;
@@ -23,7 +24,7 @@ class ParseCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output) : int
     {
         $this->em->transactional(function () {
-            $this->parserManager->parse();
+            $this->parserManager->import();
         });
 
         return Command::SUCCESS;

@@ -7,7 +7,6 @@ use App\Restaurant\Domain\Collection\Menu;
 use App\Restaurant\Domain\ValueObject\Dish\Price;
 use App\Restaurant\Domain\ValueObject\Restaurant\Delivery;
 use App\Restaurant\Domain\ValueObject\Restaurant\Name;
-use App\Restaurant\Domain\ValueObject\Restaurant\RestaurantId;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,11 +16,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Restaurant extends AggregateRoot
 {
-    /**
-     * @ORM\Embedded(class="App\Restaurant\Domain\ValueObject\Restaurant\RestaurantId", columnPrefix=false)
-     * @var RestaurantId
-     */
-    private RestaurantId $id;
     /**
      * @ORM\Embedded(class="App\Restaurant\Domain\ValueObject\Restaurant\Name", columnPrefix=false)
      * @var Name
@@ -33,28 +27,21 @@ class Restaurant extends AggregateRoot
      */
     private Delivery $delivery;
     /**
-     * @ORM\OneToMany(targetEntity="App\Restaurant\Domain\Dish", mappedBy="restaurant", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Restaurant\Domain\Dish", mappedBy="restaurant", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      * @var Collection
      */
     private Collection $menu;
 
-    public function __construct(Name $name, Delivery $delivery)
+    public function __construct(Name $name)
     {
-        $this->id = new RestaurantId();
-        $this->delivery = $delivery;
+        $this->delivery = new Delivery(new Price(0), new Price(0));
         $this->name = $name;
         $this->menu = new Menu();
     }
 
-    public function id() : RestaurantId
-    {
-        return $this->id;
-    }
-
-    public function update(Name $name, Delivery $delivery) : void
+    public function update(Name $name) : void
     {
         $this->name = $name;
-        $this->delivery = $delivery;
     }
 
     public function changeMenu(Menu $menu) : void
@@ -62,8 +49,20 @@ class Restaurant extends AggregateRoot
         $this->menu = $menu;
     }
 
-    public static function create(string $name, float $minDelivery, float $cost) : Restaurant
+    public function name() : Name
     {
-        return new Restaurant(new Name($name), new Delivery(new Price($minDelivery), new Price($cost)));
+        return $this->name;
     }
+
+    public function updateDelivery(Delivery $delivery) : void
+    {
+        $this->delivery = $delivery;
+    }
+
+    public static function create(Name $name) : Restaurant
+    {
+        return new Restaurant($name);
+    }
+
+
 }

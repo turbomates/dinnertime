@@ -10,7 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Name
 {
     /**
-     * @ORM\Column(name="name", type="string", length=100)
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(name="name", type="string", length=100, unique=true)
      */
     private string $name;
 

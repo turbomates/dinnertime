@@ -22,6 +22,11 @@ class RestaurantRepository implements RestaurantRepositoryInterface
         $this->em->persist($restaurant);
     }
 
+    public function add(Restaurant $restaurant): void
+    {
+        $this->em->merge($restaurant);
+    }
+
     public function findByName(Name $name) : ?Restaurant
     {
         return $this->createQueryBuilder()

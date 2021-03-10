@@ -2,6 +2,7 @@
 
 namespace App\Restaurant\Presentation\Controller;
 
+use App\Core\Infrastructure\QueryHandler\QueryExecutor;
 use App\Restaurant\Parser\Garage;
 use App\Restaurant\Parser\Tempo;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,7 +27,7 @@ class RestaurantController extends AbstractController
     public function garageParser(Request $request, Garage $garageParser) : Response
     {
         $this->em->transactional(function () use ($garageParser){
-            $garageParser->parse();
+            $garageParser->getRestaurant();
         });
 
         return new JsonResponse(['status' => 'ok']);
@@ -38,7 +39,7 @@ class RestaurantController extends AbstractController
     public function tempoParser(Request $request, Tempo $tempoParser) : Response
     {
         $this->em->transactional(function () use ($tempoParser){
-           $tempoParser->parse();
+           $tempoParser->getRestaurant();
         });
 
         return new JsonResponse(['status' => 'ok']);

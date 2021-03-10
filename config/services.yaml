@@ -40,9 +40,9 @@ services:
         App\Restaurant\Parser\Parser:
             tags: ['parser']
 
-    App\Restaurant\Presentation\CLI\ParserHandler:
+    App\Restaurant\Application\Importer:
         arguments:
-            $parsers: !tagged parser
+            $importers: !tagged parser
 
 
 

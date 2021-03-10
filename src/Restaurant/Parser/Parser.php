@@ -6,5 +6,5 @@ use App\Restaurant\Domain\Restaurant;
 
 interface Parser
 {
-    public function parse() : Restaurant;
+    public function getRestaurant() : Restaurant;
 }

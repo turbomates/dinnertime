@@ -5,13 +5,13 @@ namespace App\Restaurant\Parser;
 use App\Restaurant\Domain\Collection\Menu;
 use App\Restaurant\Domain\Dish;
 use App\Restaurant\Domain\Restaurant;
-use App\Restaurant\Domain\RestaurantRepository;
 use App\Restaurant\Domain\ValueObject\Dish\Description;
 use App\Restaurant\Domain\ValueObject\Dish\Name;
+use App\Restaurant\Domain\ValueObject\Restaurant\Delivery;
+use App\Restaurant\Domain\ValueObject\Restaurant\Name as RestaurantName;
 use App\Restaurant\Domain\ValueObject\Dish\Picture;
 use App\Restaurant\Domain\ValueObject\Dish\Price;
 use App\Restaurant\Domain\ValueObject\Dish\Weight;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
 class Tempo implements Parser
@@ -20,16 +20,6 @@ class Tempo implements Parser
     private const RESTAURANT_NAME = 'TEMPO';
     private const MIN_DELIVERY = 0;
     private const COST = 0;
-    private RestaurantRepository $repository;
-    private EntityManagerInterface $em;
-    private UpsertRestaurant $restaurant;
-
-    public function __construct(RestaurantRepository $repository, EntityManagerInterface $em, UpsertRestaurant $restaurant)
-    {
-        $this->repository = $repository;
-        $this->em = $em;
-        $this->restaurant = $restaurant;
-    }
 
     public function menu(Restaurant $restaurant) : Menu
     {
@@ -49,11 +39,11 @@ class Tempo implements Parser
         return $menu;
     }
 
-    public function parse() : Restaurant
+    public function getRestaurant() : Restaurant
     {
-        $restaurant = $this->restaurant->upsert(self::RESTAURANT_NAME, self::MIN_DELIVERY, self::COST);
+        $restaurant = Restaurant::create(new RestaurantName(self::RESTAURANT_NAME));
         $restaurant->changeMenu($this->menu($restaurant));
-        $this->repository->persist($restaurant);
+        $restaurant->updateDelivery(new Delivery(new Price(self::MIN_DELIVERY), new Price(self::COST)));
 
         return $restaurant;
     }

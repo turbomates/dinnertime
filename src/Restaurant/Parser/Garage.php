@@ -18,7 +18,7 @@ class Garage implements Parser
 {
     private const DISH_URL = 'https://garage.by/index.php?route=product/category&path=279_578';
     private const RESTAURANT_URL = 'https://garage.by/how-order';
-    private const RESTAURANT_NAME = 'GARAGE';
+    private const RESTAURANT_NAME = 'garage';
     private const COST = 0;
 
     private function menu(Restaurant $restaurant) : Menu

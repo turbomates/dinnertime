@@ -39,19 +39,24 @@ class Restaurant extends AggregateRoot
         $this->menu = new Menu();
     }
 
-    public function update(Name $name) : void
+    public function update(Name $name): void
     {
         $this->name = $name;
     }
 
-    public function changeMenu(Menu $menu) : void
+    public function changeMenu(Menu $menu): void
     {
         $this->menu = $menu;
     }
 
-    public function name() : Name
+    public function name(): Name
     {
         return $this->name;
+    }
+
+    public function menu() : Menu
+    {
+        return $this->menu;
     }
 
     public function updateDelivery(Delivery $delivery) : void
@@ -63,6 +68,4 @@ class Restaurant extends AggregateRoot
     {
         return new Restaurant($name);
     }
-
-
 }

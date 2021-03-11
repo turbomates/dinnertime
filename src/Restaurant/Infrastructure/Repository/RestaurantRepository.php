@@ -17,14 +17,9 @@ class RestaurantRepository implements RestaurantRepositoryInterface
         $this->em = $em;
     }
 
-    public function persist(Restaurant $restaurant) : void
-    {
-        $this->em->persist($restaurant);
-    }
-
     public function add(Restaurant $restaurant): void
     {
-        $this->em->merge($restaurant);
+        $this->em->persist($restaurant);
     }
 
     public function findByName(Name $name) : ?Restaurant

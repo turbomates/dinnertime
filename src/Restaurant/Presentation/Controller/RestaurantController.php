@@ -3,45 +3,45 @@
 namespace App\Restaurant\Presentation\Controller;
 
 use App\Core\Infrastructure\QueryHandler\QueryExecutor;
-use App\Restaurant\Parser\Garage;
-use App\Restaurant\Parser\Tempo;
+use App\Restaurant\Domain\ValueObject\Restaurant\Name;
+use App\Restaurant\Infrastructure\QueryObject\DishQuery;
+use App\Restaurant\Infrastructure\QueryObject\RestaurantQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class RestaurantController extends AbstractController
 {
     private EntityManagerInterface $em;
+    private SerializerInterface $serializer;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, SerializerInterface $serializer)
     {
         $this->em = $em;
+        $this->serializer = $serializer;
     }
 
     /**
-     * @Route("/garage/parser")
+     * @Route("/restaurants")
      */
-    public function garageParser(Request $request, Garage $garageParser) : Response
+    public function restaurants(QueryExecutor $queryExecutor) : Response
     {
-        $this->em->transactional(function () use ($garageParser){
-            $garageParser->getRestaurant();
-        });
+        $restaurants = $queryExecutor->execute(new RestaurantQuery());
 
-        return new JsonResponse(['status' => 'ok']);
+        return new JsonResponse($restaurants);
     }
 
     /**
-     * @Route("/tempo/parser")
+     * @Route("/{restaurant}/dishes")
      */
-    public function tempoParser(Request $request, Tempo $tempoParser) : Response
+    public function dishes(QueryExecutor $queryExecutor, string $restaurant) : Response
     {
-        $this->em->transactional(function () use ($tempoParser){
-           $tempoParser->getRestaurant();
-        });
+        $name = new Name($restaurant);
+        $dishes = $queryExecutor->execute(new DishQuery($name));
 
-        return new JsonResponse(['status' => 'ok']);
+        return new JsonResponse($dishes);
     }
 }

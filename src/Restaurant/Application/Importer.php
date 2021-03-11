@@ -21,7 +21,12 @@ class Importer
         /** @var Parser $importer */
         foreach ($this->importers as $importer){
             $restaurant = $importer->getRestaurant();
-            $this->repository->add($restaurant);
+            if ($restaurantExist = $this->repository->findByName($restaurant->name())){
+                $menu = $restaurant->menu();
+                $restaurantExist->changeMenu($menu->reassignedRestaurant($restaurantExist));
+            } else {
+                $this->repository->add($restaurant);
+            }
         }
     }
 }

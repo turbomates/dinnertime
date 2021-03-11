@@ -64,4 +64,9 @@ class Dish
         $this->description = $description;
         $this->restaurant = $restaurant;
     }
+
+    public function updateRestaurant(Restaurant $restaurant) : void
+    {
+        $this->restaurant = $restaurant;
+    }
 }

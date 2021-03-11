@@ -17,7 +17,7 @@ use Symfony\Component\DomCrawler\Crawler;
 class Tempo implements Parser
 {
     private const DISH_URL = 'https://www.pizzatempo.by/menu/obed.html';
-    private const RESTAURANT_NAME = 'TEMPO';
+    private const RESTAURANT_NAME = 'tempo';
     private const MIN_DELIVERY = 0;
     private const COST = 0;
 

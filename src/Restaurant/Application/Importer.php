@@ -22,8 +22,7 @@ class Importer
         foreach ($this->importers as $importer){
             $restaurant = $importer->getRestaurant();
             if ($restaurantExist = $this->repository->findByName($restaurant->name())){
-                $menu = $restaurant->menu();
-                $restaurantExist->changeMenu($menu->reassignedRestaurant($restaurantExist));
+                $restaurantExist->merge($restaurant);
             } else {
                 $this->repository->add($restaurant);
             }

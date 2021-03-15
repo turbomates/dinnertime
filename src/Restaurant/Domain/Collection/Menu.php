@@ -17,13 +17,4 @@ class Menu extends ArrayTypeCollection
 
         return true;
     }
-
-    public function reassignedRestaurant(Restaurant $restaurant) : Menu
-    {
-        $this->map(function($dish) use ($restaurant) {
-            $dish->updateRestaurant($restaurant);
-        });
-
-        return $this;
-    }
 }

@@ -21,7 +21,7 @@ class Tempo implements Parser
     private const MIN_DELIVERY = 0;
     private const COST = 0;
 
-    public function menu(Restaurant $restaurant) : Menu
+    private function menu(Restaurant $restaurant) : Menu
     {
         $html = file_get_contents(self::DISH_URL);
         $crawler = new Crawler($html);

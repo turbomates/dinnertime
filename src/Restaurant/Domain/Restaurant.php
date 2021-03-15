@@ -68,4 +68,14 @@ class Restaurant extends AggregateRoot
     {
         return new Restaurant($name);
     }
+
+    public function merge(self $restaurant) : void
+    {
+        $this->updateDelivery($restaurant->delivery);
+        $this->menu = $restaurant->menu()->map(function($dish) {
+           $dish->updateRestaurant($this);
+
+           return $dish;
+        });
+    }
 }

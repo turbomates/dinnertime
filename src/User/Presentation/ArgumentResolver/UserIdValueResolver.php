@@ -2,7 +2,7 @@
 
 namespace App\User\Presentation\ArgumentResolver;
 
-use App\Core\Infrastructure\Repository\UserRepositoryInterface;
+use App\User\Domain\UserRepository;
 use App\User\Domain\ValueObject\UserId;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
@@ -12,9 +12,9 @@ use Symfony\Component\Security\Core\Security;
 class UserIdValueResolver implements ArgumentValueResolverInterface
 {
     private Security $security;
-    private UserRepositoryInterface $repository;
+    private UserRepository $repository;
 
-    public function __construct(Security $security, UserRepositoryInterface $repository)
+    public function __construct(Security $security, UserRepository $repository)
     {
         $this->security = $security;
         $this->repository = $repository;

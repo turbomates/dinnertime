@@ -30,8 +30,19 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Core\Infrastructure\Repository\UserRepositoryInterface: '@App\User\Infrastructure\Repository\UserRepository'
+    App\User\Domain\UserRepository: '@App\User\Infrastructure\Repository\UserRepository'
 
     App\User\Presentation\ArgumentResolver\UserIdValueResolver:
         tags:
             - { name: controller.argument_value_resolver}
+
+    _instanceof:
+        App\Restaurant\Parser\Parser:
+            tags: ['parser']
+
+    App\Restaurant\Application\Importer:
+        arguments:
+            $importers: !tagged parser
+
+
+

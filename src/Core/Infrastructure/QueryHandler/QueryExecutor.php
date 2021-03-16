@@ -13,7 +13,7 @@ class QueryExecutor
         $this->em = $em;
     }
 
-    public function execute(QueryObjectInterface $queryObject) : array
+    public function execute(QueryObject $queryObject) : array
     {
        return $queryObject->execute($this->em);
     }

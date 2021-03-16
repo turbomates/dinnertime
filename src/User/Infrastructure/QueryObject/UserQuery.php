@@ -2,12 +2,12 @@
 
 namespace App\User\Infrastructure\QueryObject;
 
-use App\Core\Infrastructure\QueryHandler\QueryObjectInterface;
+use App\Core\Infrastructure\QueryHandler\QueryObject;
 use App\User\Domain\User;
 use App\User\Domain\ValueObject\UserId;
 use Doctrine\ORM\EntityManagerInterface;
 
-class UserQuery implements QueryObjectInterface
+class UserQuery implements QueryObject
 {
     private UserId $userId;
 

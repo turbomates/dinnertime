@@ -2,13 +2,12 @@
 
 namespace App\Order\Domain;
 
-use App\Order\Domain\ValueObject\Basket\BasketId;
+use App\Order\Domain\ValueObject\BasketDish\BasketDishId;
 use App\Order\Domain\ValueObject\BasketDish\DishId;
 use App\Order\Domain\ValueObject\BasketDish\DishName;
 use App\Order\Domain\ValueObject\BasketDish\DishPrice;
 use Doctrine\ORM\Mapping as ORM;
-
-//I think about connection many to many
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity()
@@ -17,10 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
 class BasketDish
 {
     /**
-     * @ORM\Embedded(class="App\Order\Domain\ValueObject\Basket\BasketId", columnPrefix=false)
-     * @var BasketId
+     * @ORM\Embedded(class="App\Order\Domain\ValueObject\BasketDish\BasketDishId", columnPrefix=false)
+     * @var BasketDishId
      */
-    private BasketId $basketId;
+    private BasketDishId $id;
     /**
      * @ORM\Embedded(class="App\Order\Domain\ValueObject\BasketDish\DishId", columnPrefix=false)
      * @var DishId
@@ -36,4 +35,16 @@ class BasketDish
      * @var DishPrice
      */
     private DishPrice $dishPrice;
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Order\Domain\Basket", inversedBy="dishes")
+     * @JoinColumn(name="basket_id", referencedColumnName="id", nullable=false)
+     * @var Basket
+     */
+    private Basket $basket;
+
+    public function __construct(DishName $dishName, DishPrice $dishPrice)
+    {
+        $this->dishName = $dishName;
+        $this->dishPrice = $dishPrice;
+    }
 }

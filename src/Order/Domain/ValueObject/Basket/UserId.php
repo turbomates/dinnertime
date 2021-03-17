@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Order\Domain\ValueObject\OrderItem;
+namespace App\Order\Domain\ValueObject\Basket;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -11,7 +11,7 @@ use Symfony\Component\Uid\Uuid;
 class UserId
 {
     /**
-     * @ORM\Column(name="user_id", type="uuid", unique=true)
+     * @ORM\Column(name="user_id", type="uuid")
      */
     private Uuid $id;
 

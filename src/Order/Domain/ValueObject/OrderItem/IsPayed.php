@@ -10,11 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 class IsPayed
 {
     /**
-     * @ORM\Column(name="is_payed", type="string", length=10)
+     * @ORM\Column(name="is_payed", type="boolean", length=10)
      */
-    private string $isPayed;
+    private bool $isPayed;
 
-    public function __construct(string $isPayed)
+    public function __construct(bool $isPayed)
     {
         $this->isPayed = $isPayed;
     }

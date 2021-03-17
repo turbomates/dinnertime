@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Order\Domain\ValueObject\OrderItem;
+namespace App\Order\Domain\ValueObject\BasketDish;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -8,10 +8,12 @@ use Symfony\Component\Uid\Uuid;
 /**
  * @ORM\Embeddable()
  */
-class UserId
+class BasketDishId
 {
     /**
-     * @ORM\Column(name="user_id", type="uuid", unique=true)
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(name="id", type="uuid", unique=true)
      */
     private Uuid $id;
 

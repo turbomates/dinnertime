@@ -11,7 +11,7 @@ use Symfony\Component\Uid\Uuid;
 class DishId
 {
     /**
-     * @ORM\Column(name="dish_id", type="Uuid")
+     * @ORM\Column(name="dish_id", type="uuid")
      */
     private Uuid $id;
 

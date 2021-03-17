@@ -23,22 +23,22 @@ class OrderItem
      */
     private OrderItemId $id;
     /**
-     * @ORM\Embedded(class="App\Order\Domain\ValueObject\OrderItem\CreatedAt, columnPrefix=false)
+     * @ORM\Embedded(class="App\Order\Domain\ValueObject\OrderItem\CreatedAt", columnPrefix=false)
      * @var CreatedAt
      */
     private CreatedAt $createdAt;
     /**
-     * @ORM\Embedded(class="App\Order\Domain\ValueObject\OrderItem\UserId, columnPrefix=false)
+     * @ORM\Embedded(class="App\Order\Domain\ValueObject\OrderItem\UserId", columnPrefix=false)
      * @var UserId
      */
     private UserId $userId;
     /**
-     * @ORM\Embedded(class="App\Order\Domain\ValueObject\OrderItem\TotalPrice, columnPrefix=false)
+     * @ORM\Embedded(class="App\Order\Domain\ValueObject\OrderItem\TotalPrice", columnPrefix=false)
      * @var TotalPrice
      */
     private TotalPrice $price;
     /**
-     * @ORM\Embedded(class="App\Order\Domain\ValueObject\OrderItem\IsPayed, columnPrefix=false)
+     * @ORM\Embedded(class="App\Order\Domain\ValueObject\OrderItem\IsPayed", columnPrefix=false)
      * @var IsPayed
      */
     private IsPayed $isPayed;
@@ -49,7 +49,7 @@ class OrderItem
      */
     private Order $order;
     /**
-     * @ORM\Embedded(class="App\Order\Domain\ValueObject\OrderItem\Dishes, columnPrefix=false)
+     * @ORM\Embedded(class="App\Order\Domain\ValueObject\OrderItem\Dishes", columnPrefix=false)
      * @var Dishes
      */
     private Dishes $dishes;

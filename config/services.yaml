@@ -36,6 +36,12 @@ services:
         tags:
             - { name: controller.argument_value_resolver}
 
+    App\Order\Domain\BasketRepository: '@App\Order\Infrastructure\Repository\BasketRepository'
+
+    App\Order\Presentation\ArgumentResolver\UserIdValueResolver:
+        tags:
+            - { name: controller.argument_value_resolver }
+
     _instanceof:
         App\Restaurant\Parser\Parser:
             tags: ['parser']

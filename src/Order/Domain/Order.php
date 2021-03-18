@@ -28,5 +28,4 @@ class Order
      * @var Collection
      */
     private Collection $orderItems;
-
 }

@@ -8,13 +8,12 @@ use App\Order\Domain\ValueObject\Basket\UserId;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class OrderController extends AbstractController
+class BasketController extends AbstractController
 {
     private EntityManagerInterface $em;
     private BasketHandler $handler;
@@ -31,15 +30,22 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/api/basket")
+     * @Route("/api/basket/add/dish")
      */
-    public function basket(UserId $userId, Request $request) : Response
+    public function addDish(UserId $userId, AddToBasket $addToBasket) : Response
     {
-        $dishes = $this->serializer->deserialize($request->getContent(), AddToBasket::class,'json');
-        $this->em->transactional(function () use ($dishes, $userId){
-            $this->handler->addToBasket($dishes, $userId);
+        $this->em->transactional(function () use ($addToBasket, $userId){
+            $this->handler->addToBasket($addToBasket, $userId);
         });
 
+        return new JsonResponse(['status' => 'ok']);
+    }
+
+    /**
+     * @Route("/api/basket/remove/dish")
+     */
+    public function removeDish() : Response
+    {
         return new JsonResponse(['status' => 'ok']);
     }
 }

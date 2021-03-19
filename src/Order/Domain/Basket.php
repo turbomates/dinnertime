@@ -2,9 +2,10 @@
 
 namespace App\Order\Domain;
 
+use App\Core\Domain\AggregateRoot;
 use App\Order\Domain\Collection\Dishes;
 use App\Order\Domain\ValueObject\Basket\BasketId;
-use App\Order\Domain\ValueObject\Basket\CreatedAt;
+use App\Order\Domain\ValueObject\CreatedAt;
 use App\Order\Domain\ValueObject\Basket\UserId;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="basket")
  */
-class Basket
+class Basket extends AggregateRoot
 {
     /**
      * @ORM\Embedded(class="App\Order\Domain\ValueObject\Basket\BasketId", columnPrefix=false)
@@ -21,7 +22,7 @@ class Basket
      */
     private BasketId $id;
     /**
-     * @ORM\Embedded(class="App\Order\Domain\ValueObject\Basket\CreatedAt", columnPrefix=false)
+     * @ORM\Embedded(class="App\Order\Domain\ValueObject\CreatedAt", columnPrefix=false)
      * @var CreatedAt
      */
     private CreatedAt $createdAt;
@@ -44,8 +45,13 @@ class Basket
         $this->dishes = new Dishes();
     }
 
-    public function addDishes(Dishes $dishes) : void
+    public function addDish(BasketDish $dish) : void
     {
-        $this->dishes = $dishes;
+        $this->dishes->add($dish);
+    }
+
+    public static function create(UserId $userId) : Basket
+    {
+        return new Basket($userId);
     }
 }

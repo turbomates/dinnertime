@@ -2,6 +2,7 @@
 
 namespace App\Order\Domain;
 
+use App\Core\Domain\AggregateRoot;
 use App\Order\Domain\ValueObject\Order\OrderId;
 use App\Order\Domain\ValueObject\OrderItem\UserId;
 use Doctrine\Common\Collections\Collection;
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="orders")
  */
-class Order
+class Order extends AggregateRoot
 {
     /**
      * @ORM\Embedded(class="App\Order\Domain\ValueObject\Order\OrderId", columnPrefix=false)

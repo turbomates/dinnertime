@@ -6,7 +6,6 @@ use App\Order\Application\Command\AddToBasket;
 use App\Order\Domain\Basket;
 use App\Order\Domain\BasketDish;
 use App\Order\Domain\BasketRepository;
-use App\Order\Domain\Collection\Dishes;
 use App\Order\Domain\ValueObject\Basket\UserId;
 use App\Order\Domain\ValueObject\BasketDish\DishName;
 use App\Order\Domain\ValueObject\BasketDish\DishPrice;
@@ -20,14 +19,19 @@ class BasketHandler
         $this->repository = $repository;
     }
 
-    //I think about it
     public function addToBasket(AddToBasket $dishes, UserId $userId) : void
     {
-        $basket = new Basket($userId);
-        $basketDish = new BasketDish(new DishName($dishes->dishName), new DishPrice($dishes->dishPrice), $basket);
-        $dishes = new Dishes();
-        $dishes->add($basketDish);
-        $basket->addDishes($dishes);
+        $basket = $this->getBasket($userId);
+        $basket->addDish(new BasketDish(new DishName($dishes->dishName), new DishPrice($dishes->dishPrice), $basket));
         $this->repository->add($basket);
+    }
+
+    private function getBasket(UserId $userId) : Basket
+    {
+        if ($basket = $this->repository->findByUserId($userId)){
+            return $basket;
+        }
+
+        return Basket::create($userId);
     }
 }

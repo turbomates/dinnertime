@@ -8,10 +8,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Uid\Uuid;
 
 class UserIdValueResolver implements ArgumentValueResolverInterface
 {
-    private Request $currentRequest;
+    private ?Request $currentRequest;
     private HttpKernelInterface $httpKernel;
 
     public function __construct(RequestStack $requestStack, HttpKernelInterface $httpKernel)
@@ -33,9 +34,8 @@ class UserIdValueResolver implements ArgumentValueResolverInterface
     {
         $path['_controller'] = 'App\User\Presentation\Controller\UserController::user';
         $subRequest = $this->currentRequest->duplicate([], null, $path);
-        $test = $this->httpKernel->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
-        $response = json_decode($test->getContent(), true);
+        $response = json_decode($this->httpKernel->handle($subRequest, HttpKernelInterface::SUB_REQUEST)->getContent(), true);
 
-        yield new UserId($response['id']);
+        yield new UserId(Uuid::fromString($response['id']));
     }
 }

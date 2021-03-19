@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Order\Domain\ValueObject\OrderItem;
+namespace App\Order\Domain\ValueObject;
 
 use Doctrine\ORM\Mapping as ORM;
 

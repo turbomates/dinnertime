@@ -3,6 +3,7 @@
 namespace App\Order\Domain\ValueObject\Basket;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @ORM\Embeddable()
@@ -10,12 +11,17 @@ use Doctrine\ORM\Mapping as ORM;
 class UserId
 {
     /**
-     * @ORM\Column(name="user_id", type="string")
+     * @ORM\Column(name="user_id", type="uuid")
      */
-    private string $id;
+    private Uuid $id;
 
-    public function __construct(string $id)
+    public function __construct(Uuid $id)
     {
         $this->id = $id;
+    }
+
+    public function id() : Uuid
+    {
+        return $this->id;
     }
 }

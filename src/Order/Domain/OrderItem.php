@@ -2,9 +2,8 @@
 
 namespace App\Order\Domain;
 
-use App\Order\Domain\ValueObject\OrderItem\CreatedAt;
+use App\Order\Domain\ValueObject\CreatedAt;
 use App\Order\Domain\ValueObject\OrderItem\Dishes;
-use App\Order\Domain\ValueObject\OrderItem\IsPayed;
 use App\Order\Domain\ValueObject\OrderItem\OrderItemId;
 use App\Order\Domain\ValueObject\OrderItem\TotalPrice;
 use App\Order\Domain\ValueObject\OrderItem\UserId;
@@ -23,7 +22,7 @@ class OrderItem
      */
     private OrderItemId $id;
     /**
-     * @ORM\Embedded(class="App\Order\Domain\ValueObject\OrderItem\CreatedAt", columnPrefix=false)
+     * @ORM\Embedded(class="App\Order\Domain\ValueObject\CreatedAt", columnPrefix=false)
      * @var CreatedAt
      */
     private CreatedAt $createdAt;
@@ -38,10 +37,9 @@ class OrderItem
      */
     private TotalPrice $price;
     /**
-     * @ORM\Embedded(class="App\Order\Domain\ValueObject\OrderItem\IsPayed", columnPrefix=false)
-     * @var IsPayed
+     * @ORM\Column(name="is_payed", type="boolean", length=10)
      */
-    private IsPayed $isPayed;
+    private bool $isPayed;
     /**
      * @ORM\ManyToOne(targetEntity="App\Order\Domain\Order", inversedBy="id")
      * @JoinColumn(name="order_id", referencedColumnName="id", nullable=false)

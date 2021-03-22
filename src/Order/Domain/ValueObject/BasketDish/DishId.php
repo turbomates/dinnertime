@@ -15,8 +15,13 @@ class DishId
      */
     private Uuid $id;
 
-    public function __construct()
+    public function __construct(Uuid $id)
     {
-        $this->id = Uuid::v4();
+        $this->id = $id;
+    }
+
+    public function id() : Uuid
+    {
+        return $this->id;
     }
 }

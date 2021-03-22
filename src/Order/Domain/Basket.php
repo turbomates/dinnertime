@@ -9,6 +9,7 @@ use App\Order\Domain\ValueObject\CreatedAt;
 use App\Order\Domain\ValueObject\Basket\UserId;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @ORM\Entity()
@@ -32,7 +33,7 @@ class Basket extends AggregateRoot
      */
     private UserId $userId;
     /**
-     * @ORM\OneToMany(targetEntity="App\Order\Domain\BasketDish", mappedBy="basket", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Order\Domain\BasketDish", mappedBy="basket", cascade={"persist", "remove", "merge"}, orphanRemoval=true, indexBy="id.id")
      * @var Collection
      */
     private Collection $dishes;
@@ -48,6 +49,18 @@ class Basket extends AggregateRoot
     public function addDish(BasketDish $dish) : void
     {
         $this->dishes->add($dish);
+    }
+
+    public function dishes() : Collection
+    {
+        return $this->dishes;
+    }
+
+    public function removeDish(Uuid $dishId) : void
+    {
+        if ($this->dishes->containsKey($dishId->jsonSerialize())) {
+            $this->dishes->remove($dishId->jsonSerialize());
+        }
     }
 
     public static function create(UserId $userId) : Basket

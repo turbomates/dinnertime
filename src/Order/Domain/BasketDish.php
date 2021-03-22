@@ -3,6 +3,7 @@
 namespace App\Order\Domain;
 
 use App\Order\Domain\ValueObject\BasketDish\BasketDishId;
+use App\Order\Domain\ValueObject\BasketDish\DishId;
 use App\Order\Domain\ValueObject\BasketDish\DishName;
 use App\Order\Domain\ValueObject\BasketDish\DishPrice;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,6 +21,11 @@ class BasketDish
      */
     private BasketDishId $id;
     /**
+     * @ORM\Embedded(class="App\Order\Domain\ValueObject\BasketDish\DishId", columnPrefix=false)
+     * @var DishId
+     */
+    private DishId $dishId;
+    /**
      * @ORM\Embedded(class="App\Order\Domain\ValueObject\BasketDish\DishName", columnPrefix=false)
      * @var DishName
      */
@@ -36,11 +42,18 @@ class BasketDish
      */
     private Basket $basket;
 
-    public function __construct(DishName $dishName, DishPrice $dishPrice, Basket $basket)
+    public function __construct(DishId $dishId, DishName $dishName, DishPrice $dishPrice, Basket $basket)
     {
         $this->id = new BasketDishId();
+        //Think to remove
+        $this->dishId = $dishId;
         $this->dishName = $dishName;
         $this->dishPrice = $dishPrice;
         $this->basket = $basket;
+    }
+
+    public function id() : BasketDishId
+    {
+        return $this->id;
     }
 }

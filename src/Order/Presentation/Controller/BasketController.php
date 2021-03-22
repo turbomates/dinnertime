@@ -4,6 +4,7 @@ namespace App\Order\Presentation\Controller;
 
 use App\Order\Application\BasketHandler;
 use App\Order\Application\Command\AddToBasket;
+use App\Order\Application\Command\RemoveDish;
 use App\Order\Domain\ValueObject\Basket\UserId;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,7 +45,19 @@ class BasketController extends AbstractController
     /**
      * @Route("/api/basket/remove/dish")
      */
-    public function removeDish() : Response
+    public function removeDish(UserId $userId, RemoveDish $removeDish) : Response
+    {
+        $this->em->transactional(function () use ($removeDish, $userId){
+           $this->handler->removeDish($userId, $removeDish);
+        });
+
+        return new JsonResponse(['status' => 'ok']);
+    }
+
+    /**
+     * @Route("/api/basket/list")
+     */
+    public function listDishes() : Response
     {
         return new JsonResponse(['status' => 'ok']);
     }

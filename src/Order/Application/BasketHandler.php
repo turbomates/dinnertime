@@ -8,10 +8,10 @@ use App\Order\Application\Command\RemoveDish;
 use App\Order\Domain\Basket;
 use App\Order\Domain\BasketDish;
 use App\Order\Domain\BasketRepository;
-use App\Order\Domain\ValueObject\Basket\UserId;
 use App\Order\Domain\ValueObject\BasketDish\DishId;
 use App\Order\Domain\ValueObject\BasketDish\DishName;
-use App\Order\Domain\ValueObject\BasketDish\DishPrice;
+use App\Order\Domain\ValueObject\Price;
+use App\Order\Domain\ValueObject\UserId;
 
 class BasketHandler
 {
@@ -27,7 +27,7 @@ class BasketHandler
     public function addToBasket(AddToBasket $dishes, UserId $userId) : void
     {
         $basket = $this->getBasket($userId);
-        $basket->addDish(new BasketDish(new DishId($dishes->dishId),new DishName($dishes->dishName), new DishPrice($dishes->dishPrice), $basket));
+        $basket->addDish(new BasketDish(new DishId($dishes->dishId),new DishName($dishes->dishName), new Price($dishes->dishPrice), $basket));
         $this->repository->add($basket);
     }
 

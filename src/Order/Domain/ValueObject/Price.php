@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Order\Domain\ValueObject\BasketDish;
+
+namespace App\Order\Domain\ValueObject;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Embeddable()
  */
-class DishPrice
+class Price
 {
     /**
      * @ORM\Column(name="dish_price", type="float")

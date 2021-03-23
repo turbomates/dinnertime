@@ -6,7 +6,7 @@ use App\Core\Domain\AggregateRoot;
 use App\Order\Domain\Collection\Dishes;
 use App\Order\Domain\ValueObject\Basket\BasketId;
 use App\Order\Domain\ValueObject\CreatedAt;
-use App\Order\Domain\ValueObject\Basket\UserId;
+use App\Order\Domain\ValueObject\UserId;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -28,7 +28,7 @@ class Basket extends AggregateRoot
      */
     private CreatedAt $createdAt;
     /**
-     * @ORM\Embedded(class="App\Order\Domain\ValueObject\Basket\UserId", columnPrefix=false)
+     * @ORM\Embedded(class="App\Order\Domain\ValueObject\UserId", columnPrefix=false)
      * @var UserId
      */
     private UserId $userId;

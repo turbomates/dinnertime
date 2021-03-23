@@ -2,7 +2,7 @@
 
 namespace App\Order\Domain;
 
-use App\Order\Domain\ValueObject\Basket\UserId;
+use App\Order\Domain\ValueObject\UserId;
 
 interface BasketRepository
 {

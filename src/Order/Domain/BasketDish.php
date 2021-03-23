@@ -5,7 +5,7 @@ namespace App\Order\Domain;
 use App\Order\Domain\ValueObject\BasketDish\BasketDishId;
 use App\Order\Domain\ValueObject\BasketDish\DishId;
 use App\Order\Domain\ValueObject\BasketDish\DishName;
-use App\Order\Domain\ValueObject\BasketDish\DishPrice;
+use App\Order\Domain\ValueObject\Price;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 
@@ -31,10 +31,10 @@ class BasketDish
      */
     private DishName $dishName;
     /**
-     * @ORM\Embedded(class="App\Order\Domain\ValueObject\BasketDish\DishPrice", columnPrefix=false)
-     * @var DishPrice
+     * @ORM\Embedded(class="App\Order\Domain\ValueObject\Price", columnPrefix=false)
+     * @var Price
      */
-    private DishPrice $dishPrice;
+    private Price $dishPrice;
     /**
      * @ORM\ManyToOne(targetEntity="App\Order\Domain\Basket", inversedBy="dishes")
      * @JoinColumn(name="basket_id", referencedColumnName="id", nullable=false)
@@ -42,7 +42,7 @@ class BasketDish
      */
     private Basket $basket;
 
-    public function __construct(DishId $dishId, DishName $dishName, DishPrice $dishPrice, Basket $basket)
+    public function __construct(DishId $dishId, DishName $dishName, Price $dishPrice, Basket $basket)
     {
         $this->id = new BasketDishId();
         //Think to remove

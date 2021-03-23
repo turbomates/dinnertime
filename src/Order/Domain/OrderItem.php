@@ -5,8 +5,8 @@ namespace App\Order\Domain;
 use App\Order\Domain\ValueObject\CreatedAt;
 use App\Order\Domain\ValueObject\OrderItem\Dishes;
 use App\Order\Domain\ValueObject\OrderItem\OrderItemId;
-use App\Order\Domain\ValueObject\OrderItem\TotalPrice;
-use App\Order\Domain\ValueObject\OrderItem\UserId;
+use App\Order\Domain\ValueObject\Price;
+use App\Order\Domain\ValueObject\UserId;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 
@@ -27,15 +27,15 @@ class OrderItem
      */
     private CreatedAt $createdAt;
     /**
-     * @ORM\Embedded(class="App\Order\Domain\ValueObject\OrderItem\UserId", columnPrefix=false)
+     * @ORM\Embedded(class="App\Order\Domain\ValueObject\UserId", columnPrefix=false)
      * @var UserId
      */
     private UserId $userId;
     /**
-     * @ORM\Embedded(class="App\Order\Domain\ValueObject\OrderItem\TotalPrice", columnPrefix=false)
-     * @var TotalPrice
+     * @ORM\Embedded(class="App\Order\Domain\ValueObject\Price", columnPrefix="total_")
+     * @var Price
      */
-    private TotalPrice $price;
+    private Price $totalPrice;
     /**
      * @ORM\Column(name="is_payed", type="boolean", length=10)
      */

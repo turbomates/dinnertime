@@ -4,7 +4,7 @@ namespace App\Order\Infrastructure\Repository;
 
 use App\Order\Domain\Basket;
 use App\Order\Domain\BasketRepository as BasketRepositoryInterface;
-use App\Order\Domain\ValueObject\Basket\UserId;
+use App\Order\Domain\ValueObject\UserId;
 use Doctrine\ORM\EntityManagerInterface;
 
 class BasketRepository implements BasketRepositoryInterface

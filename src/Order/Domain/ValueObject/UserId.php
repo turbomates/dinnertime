@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Order\Domain\ValueObject\Basket;
+namespace App\Order\Domain\ValueObject;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;

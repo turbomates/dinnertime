@@ -2,7 +2,7 @@
 
 namespace App\Order\Presentation\ArgumentResolver;
 
-use App\Order\Domain\ValueObject\Basket\UserId;
+use App\Order\Domain\ValueObject\UserId;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;

@@ -21,4 +21,9 @@ class BasketId
     {
         $this->id = Uuid::v4();
     }
+
+    public function id() : Uuid
+    {
+        return $this->id;
+    }
 }

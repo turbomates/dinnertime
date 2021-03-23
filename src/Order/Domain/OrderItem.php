@@ -51,4 +51,15 @@ class OrderItem
      * @var Dishes
      */
     private Dishes $dishes;
+
+    public function __construct(UserId $userId, Price $totalPrice, bool $isPayed, Order $order, Dishes $dishes)
+    {
+        $this->id = new OrderItemId();
+        $this->createdAt = new CreatedAt();
+        $this->userId = $userId;
+        $this->totalPrice = $totalPrice;
+        $this->isPayed = $isPayed;
+        $this->order = $order;
+        $this->dishes = $dishes;
+    }
 }

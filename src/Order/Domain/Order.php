@@ -3,6 +3,7 @@
 namespace App\Order\Domain;
 
 use App\Core\Domain\AggregateRoot;
+use App\Order\Domain\Collection\OrderItems;
 use App\Order\Domain\ValueObject\Order\OrderId;
 use App\Order\Domain\ValueObject\UserId;
 use Doctrine\Common\Collections\Collection;
@@ -29,4 +30,11 @@ class Order extends AggregateRoot
      * @var Collection
      */
     private Collection $orderItems;
+
+    public function __construct(UserId $userId)
+    {
+        $this->id = new OrderId();
+        $this->userId = $userId;
+        $this->orderItems = new OrderItems();
+    }
 }

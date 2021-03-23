@@ -2,33 +2,30 @@
 
 namespace App\Order\Presentation\Controller;
 
+use App\Core\Infrastructure\QueryHandler\QueryExecutor;
 use App\Order\Application\BasketHandler;
 use App\Order\Application\Command\AddToBasket;
 use App\Order\Application\Command\RemoveDish;
 use App\Order\Domain\ValueObject\UserId;
+use App\Order\Infrastructure\QueryObject\BasketDishQuery;
+use App\Order\Infrastructure\QueryObject\BasketQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class BasketController extends AbstractController
 {
     private EntityManagerInterface $em;
     private BasketHandler $handler;
-    private TokenStorageInterface $tokenStorage;
-    private SerializerInterface $serializer;
+    private QueryExecutor $queryExecutor;
 
-    public function __construct(EntityManagerInterface $em, BasketHandler $handler, TokenStorageInterface $tokenStorage,
-        SerializerInterface $serializer)
+    public function __construct(EntityManagerInterface $em, BasketHandler $handler, QueryExecutor $queryExecutor)
     {
         $this->em = $em;
         $this->handler = $handler;
-        $this->tokenStorage = $tokenStorage;
-        $this->serializer = $serializer;
+        $this->queryExecutor = $queryExecutor;
     }
 
     /**
@@ -56,11 +53,22 @@ class BasketController extends AbstractController
     }
 
     /**
-     * @Route("/api/basket/list")
+     * @Route("/api/basket/user")
      */
-    public function listDishes(UserId $userId, Request $request) : Response
+    public function basketUser(UserId $userId) : Response
     {
+        $basket = $this->queryExecutor->execute(new BasketDishQuery($userId));
 
-        return new JsonResponse(['status' => 'ok']);
+        return new JsonResponse($basket);
+    }
+
+    /**
+     * @Route("/api/basket")
+     */
+    public function basket(UserId $userId) : Response
+    {
+        $basket = $this->queryExecutor->execute(new BasketQuery());
+
+        return new JsonResponse($basket);
     }
 }

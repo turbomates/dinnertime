@@ -6,6 +6,7 @@ use App\Core\Domain\AggregateRoot;
 use App\Order\Domain\Collection\Dishes;
 use App\Order\Domain\ValueObject\Basket\BasketId;
 use App\Order\Domain\ValueObject\CreatedAt;
+use App\Order\Domain\ValueObject\Price;
 use App\Order\Domain\ValueObject\UserId;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -61,6 +62,23 @@ class Basket extends AggregateRoot
         if ($this->dishes->containsKey($dishId->jsonSerialize())) {
             $this->dishes->remove($dishId->jsonSerialize());
         }
+    }
+
+    public function userId() : UserId
+    {
+        return $this->userId;
+    }
+
+    //I remake this method
+    public function totalPrice() : Price
+    {
+        $totalPrice = 0;
+        foreach($this->dishes as $dish)
+        {
+            $totalPrice += $dish->price()->totalPrice();
+        }
+
+        return $totalPrice;
     }
 
     public static function create(UserId $userId) : Basket

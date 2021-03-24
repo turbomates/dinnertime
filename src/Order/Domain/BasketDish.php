@@ -56,4 +56,9 @@ class BasketDish
     {
         return $this->id;
     }
+
+    public function price() : Price
+    {
+        return $this->dishPrice;
+    }
 }

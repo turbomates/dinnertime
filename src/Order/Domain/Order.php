@@ -37,4 +37,14 @@ class Order extends AggregateRoot
         $this->userId = $userId;
         $this->orderItems = new OrderItems();
     }
+
+    public function addOrderItem(OrderItem $orderItem)
+    {
+        $this->orderItems->add($orderItem);
+    }
+
+    public static function create(UserId $userId) : Order
+    {
+        return new Order($userId);
+    }
 }

@@ -3,7 +3,6 @@
 namespace App\Order\Domain;
 
 use App\Order\Domain\ValueObject\CreatedAt;
-use App\Order\Domain\ValueObject\OrderItem\Dishes;
 use App\Order\Domain\ValueObject\OrderItem\OrderItemId;
 use App\Order\Domain\ValueObject\Price;
 use App\Order\Domain\ValueObject\UserId;
@@ -47,18 +46,17 @@ class OrderItem
      */
     private Order $order;
     /**
-     * @ORM\Embedded(class="App\Order\Domain\ValueObject\OrderItem\Dishes", columnPrefix=false)
-     * @var Dishes
+     * @ORM\Column(name="dishes", type="json", length=255)
      */
-    private Dishes $dishes;
+    private string $dishes;
 
-    public function __construct(UserId $userId, Price $totalPrice, bool $isPayed, Order $order, Dishes $dishes)
+    public function __construct(UserId $userId, Price $totalPrice, Order $order, string $dishes)
     {
         $this->id = new OrderItemId();
         $this->createdAt = new CreatedAt();
         $this->userId = $userId;
         $this->totalPrice = $totalPrice;
-        $this->isPayed = $isPayed;
+        $this->isPayed = false;
         $this->order = $order;
         $this->dishes = $dishes;
     }

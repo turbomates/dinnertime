@@ -2,7 +2,6 @@
 
 namespace App\Order\Application;
 
-use App\Core\Infrastructure\QueryHandler\QueryExecutor;
 use App\Order\Application\Command\AddToBasket;
 use App\Order\Application\Command\RemoveDish;
 use App\Order\Domain\Basket;
@@ -16,12 +15,19 @@ use App\Order\Domain\ValueObject\UserId;
 class BasketHandler
 {
     private BasketRepository $repository;
-    private QueryExecutor $queryExecutor;
 
-    public function __construct(BasketRepository $repository, QueryExecutor $queryExecutor)
+    public function __construct(BasketRepository $repository)
     {
         $this->repository = $repository;
-        $this->queryExecutor = $queryExecutor;
+    }
+
+    private function getBasket(UserId $userId) : Basket
+    {
+        if ($basket = $this->repository->findByUserId($userId)){
+            return $basket;
+        }
+
+        return Basket::create($userId);
     }
 
     public function addToBasket(AddToBasket $dishes, UserId $userId) : void
@@ -37,12 +43,5 @@ class BasketHandler
         $basket->removeDish($removeDish->basketDishId);
     }
 
-    private function getBasket(UserId $userId) : Basket
-    {
-        if ($basket = $this->repository->findByUserId($userId)){
-            return $basket;
-        }
 
-        return Basket::create($userId);
-    }
 }

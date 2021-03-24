@@ -6,6 +6,7 @@ use App\Order\Domain\Basket;
 use App\Order\Domain\BasketRepository as BasketRepositoryInterface;
 use App\Order\Domain\ValueObject\UserId;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Uid\Uuid;
 
 class BasketRepository implements BasketRepositoryInterface
 {
@@ -30,5 +31,26 @@ class BasketRepository implements BasketRepositoryInterface
             ->setParameter('id', $id->id())
             ->getQuery()
             ->getOneOrNullResult();
+    }
+    //when I remake, this method will not need
+    public function findByBasketId(Uuid $id) : array
+    {
+        return $this->em->createQueryBuilder()
+            ->select('d.dishName.name as dishName, d.dishPrice.price as dishPrice')
+            ->from(Basket::class, 'b')
+            ->join('b.dishes', 'd')
+            ->andWhere('b.id.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    public function basket() : array
+    {
+        return $this->em->createQueryBuilder()
+            ->select( 'b')
+            ->from(Basket::class, 'b')
+            ->getQuery()
+            ->getResult();
     }
 }

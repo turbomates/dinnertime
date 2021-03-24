@@ -18,4 +18,9 @@ class Price
     {
         $this->price = $price;
     }
+
+    public function totalPrice() : float
+    {
+        return $this->price;
+    }
 }

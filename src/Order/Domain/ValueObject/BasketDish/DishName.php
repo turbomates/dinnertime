@@ -18,4 +18,9 @@ class DishName
     {
         $this->name = $name;
     }
+
+    public function name() : string
+    {
+        return $this->name;
+    }
 }

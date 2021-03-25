@@ -42,6 +42,4 @@ class BasketHandler
         $basket = $this->getBasket($userId);
         $basket->removeDish($removeDish->basketDishId);
     }
-
-
 }

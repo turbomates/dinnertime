@@ -52,9 +52,17 @@ class Basket extends AggregateRoot
         $this->dishes->add($dish);
     }
 
-    public function dishes() : Collection
+    public function jsonDishes() : string
     {
-        return $this->dishes;
+        $dishes = [];
+        foreach ($this->dishes as $dish){
+            $dishes[] = [
+                'dishName' => $dish->name()->name(),
+                'dishPrice' => $dish->price()->price()
+            ];
+        }
+
+        return json_encode($dishes, JSON_UNESCAPED_UNICODE);
     }
 
     public function removeDish(Uuid $dishId) : void
@@ -69,16 +77,15 @@ class Basket extends AggregateRoot
         return $this->userId;
     }
 
-    //I remake this method
     public function totalPrice() : Price
     {
         $totalPrice = 0;
         foreach($this->dishes as $dish)
         {
-            $totalPrice += $dish->price()->totalPrice();
+            $totalPrice += $dish->price()->price();
         }
 
-        return $totalPrice;
+        return new Price($totalPrice);
     }
 
     public static function create(UserId $userId) : Basket

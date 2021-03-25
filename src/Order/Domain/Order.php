@@ -8,6 +8,7 @@ use App\Order\Domain\ValueObject\Order\OrderId;
 use App\Order\Domain\ValueObject\UserId;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @ORM\Entity()
@@ -41,6 +42,11 @@ class Order extends AggregateRoot
     public function addOrderItem(OrderItem $orderItem)
     {
         $this->orderItems->add($orderItem);
+    }
+
+    public function isPayed(Uuid $userId, bool $isPayed) : void
+    {
+
     }
 
     public static function create(UserId $userId) : Order

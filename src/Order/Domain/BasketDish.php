@@ -61,4 +61,9 @@ class BasketDish
     {
         return $this->dishPrice;
     }
+
+    public function name() : DishName
+    {
+        return $this->dishName;
+    }
 }

@@ -19,7 +19,7 @@ class Price
         $this->price = $price;
     }
 
-    public function totalPrice() : float
+    public function price() : float
     {
         return $this->price;
     }

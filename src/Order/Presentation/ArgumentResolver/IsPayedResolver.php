@@ -2,13 +2,13 @@
 
 namespace App\Order\Presentation\ArgumentResolver;
 
-use App\Order\Application\Command\AddToBasket;
+use App\Order\Application\Command\IsPayed;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class AddToBasketResolver implements ArgumentValueResolverInterface
+class IsPayedResolver implements ArgumentValueResolverInterface
 {
     private SerializerInterface $serializer;
 
@@ -19,7 +19,7 @@ class AddToBasketResolver implements ArgumentValueResolverInterface
 
     public function supports(Request $request, ArgumentMetadata $argument) : bool
     {
-        if (AddToBasket::class !== $argument->getType()) {
+        if (IsPayed::class !== $argument->getType()) {
             return false;
         }
 
@@ -28,6 +28,6 @@ class AddToBasketResolver implements ArgumentValueResolverInterface
 
     public function resolve(Request $request, ArgumentMetadata $argument) : iterable
     {
-        yield $this->serializer->deserialize($request->getContent(), AddToBasket::class,'json');
+        yield $this->serializer->deserialize($request->getContent(), IsPayed::class, 'json');
     }
 }

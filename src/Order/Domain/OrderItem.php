@@ -60,4 +60,15 @@ class OrderItem
         $this->order = $order;
         $this->dishes = $dishes;
     }
+
+    public function pay() : void
+    {
+        $this->isPayed = true;
+    }
+
+    public function userId() : UserId
+    {
+        return $this->userId;
+    }
+
 }

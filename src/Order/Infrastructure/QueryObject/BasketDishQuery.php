@@ -19,7 +19,7 @@ class BasketDishQuery implements QueryObject
     public function execute(EntityManagerInterface $em): array
     {
         return $restaurant = $em->createQueryBuilder()
-            ->select( 'd.dishId.id as dishId, d.dishName.name as nameDish, d.dishPrice.price as dishPrice')
+            ->select( 'd.dishId.id as dishId, d.dishName as dishName, d.dishPrice.price as dishPrice')
             ->from(BasketDish::class, 'd')
             ->join('d.basket', 'b')
             ->orderBy('b.createdAt.createdAt')

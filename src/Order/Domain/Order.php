@@ -27,7 +27,7 @@ class Order extends AggregateRoot
      */
     private UserId $userId;
     /**
-     * @ORM\OneToMany(targetEntity="App\Order\Domain\OrderItem", mappedBy="order", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Order\Domain\OrderItem", mappedBy="order", cascade={"persist", "remove"}, orphanRemoval=true, indexBy="id.id")
      * @var Collection
      */
     private Collection $orderItems;
@@ -44,9 +44,12 @@ class Order extends AggregateRoot
         $this->orderItems->add($orderItem);
     }
 
-    public function isPayed(Uuid $userId, bool $isPayed) : void
+    //I will finish this method
+    public function payOrderItem(Uuid $orderItemId) : void
     {
-
+        if ($this->orderItems->containsKey($orderItemId->jsonSerialize())){
+                $orderItem->pay();
+        }
     }
 
     public static function create(UserId $userId) : Order

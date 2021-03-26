@@ -50,12 +50,12 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("api/order/is/payed")
+     * @Route("api/order/{orderId}/user/payed")
      */
-    public function isPayed(IsPayed $isPayed) : Response
+    public function isPayed(IsPayed $isPayed, string $orderId) : Response
     {
-        $this->em->transactional(function () use ($isPayed){
-           $this->handler->isPayed($isPayed);
+        $this->em->transactional(function () use ($isPayed, $orderId){
+           $this->handler->payOrderItem($isPayed, $orderId);
         });
 
         return new JsonResponse(['status' => 'ok']);

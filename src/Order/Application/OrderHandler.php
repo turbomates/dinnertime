@@ -8,6 +8,7 @@ use App\Order\Domain\Order;
 use App\Order\Domain\OrderItem;
 use App\Order\Domain\OrderRepository;
 use App\Order\Domain\ValueObject\UserId;
+use Symfony\Component\Uid\Uuid;
 
 class OrderHandler
 {
@@ -32,10 +33,10 @@ class OrderHandler
         $this->orderRepository->add($order);
     }
 
-
-    //while didn't make
-    public function isPayed(IsPayed $isPayed)
+    public function payOrderItem(IsPayed $isPayed, string $orderId)
     {
-        $order = $this->orderRepository->findByUserId(new UserId($isPayed->userId));
+        $order = $this->orderRepository->findByUserId(Uuid::fromString($orderId));
+        $order->payOrderItem($isPayed->orderItemId);
+        $this->orderRepository->add($order);
     }
 }

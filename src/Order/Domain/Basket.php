@@ -52,12 +52,13 @@ class Basket extends AggregateRoot
         $this->dishes->add($dish);
     }
 
+    //I will remake this method
     public function jsonDishes() : string
     {
         $dishes = [];
         foreach ($this->dishes as $dish){
             $dishes[] = [
-                'dishName' => $dish->name()->name(),
+                'dishName' => $dish->name(),
                 'dishPrice' => $dish->price()->price()
             ];
         }

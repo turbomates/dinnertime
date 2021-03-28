@@ -44,12 +44,10 @@ class Order extends AggregateRoot
         $this->orderItems->add($orderItem);
     }
 
-    //I will finish this method
     public function payOrderItem(Uuid $orderItemId) : void
     {
-        if ($this->orderItems->containsKey($orderItemId->jsonSerialize())){
-                $orderItem->pay();
-        }
+        $orderItem = $this->orderItems->get($orderItemId->jsonSerialize());
+        $orderItem->pay();
     }
 
     public static function create(UserId $userId) : Order

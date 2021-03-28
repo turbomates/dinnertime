@@ -52,7 +52,7 @@ class OrderController extends AbstractController
     /**
      * @Route("api/order/{orderId}/user/payed")
      */
-    public function isPayed(IsPayed $isPayed, string $orderId) : Response
+    public function userPayed(IsPayed $isPayed, string $orderId) : Response
     {
         $this->em->transactional(function () use ($isPayed, $orderId){
            $this->handler->payOrderItem($isPayed, $orderId);

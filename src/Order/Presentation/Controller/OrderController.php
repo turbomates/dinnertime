@@ -5,9 +5,11 @@ namespace App\Order\Presentation\Controller;
 use App\Core\Infrastructure\QueryHandler\QueryExecutor;
 use App\Order\Application\Command\IsPayed;
 use App\Order\Application\OrderHandler;
+use App\Order\Domain\Order;
 use App\Order\Domain\ValueObject\UserId;
 use App\Order\Infrastructure\QueryObject\OrderItemsQuery;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,9 +53,11 @@ class OrderController extends AbstractController
 
     /**
      * @Route("api/order/{orderId}/user/payed")
+     * @ParamConverter("order", class="App\Order\Domain\Order", options={"mapping": {"orderId" = "id.id"}})
      */
-    public function userPayed(IsPayed $isPayed, string $orderId) : Response
+    public function userPayed(IsPayed $isPayed, Order $order) : Response
     {
+        var_dump($order);exit();
         $this->em->transactional(function () use ($isPayed, $orderId){
            $this->handler->payOrderItem($isPayed, $orderId);
         });

@@ -54,6 +54,11 @@ services:
         tags:
             - { name: controller.argument_value_resolver }
 
+#    App\Order\Presentation\OrderParamConverter:
+#        tags:
+#            -{ name: request.param_converter}
+#        arguments: ['@router']
+
     _instanceof:
         App\Restaurant\Parser\Parser:
             tags: ['parser']

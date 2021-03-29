@@ -2,13 +2,13 @@
 
 namespace App\Order\Presentation\ArgumentResolver;
 
-use App\Order\Application\Command\IsPayed;
+use App\Order\Application\Command\PayOrderItem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class IsPayedResolver implements ArgumentValueResolverInterface
+class PayOrderItemResolver implements ArgumentValueResolverInterface
 {
     private SerializerInterface $serializer;
 
@@ -19,7 +19,7 @@ class IsPayedResolver implements ArgumentValueResolverInterface
 
     public function supports(Request $request, ArgumentMetadata $argument) : bool
     {
-        if (IsPayed::class !== $argument->getType()) {
+        if (PayOrderItem::class !== $argument->getType()) {
             return false;
         }
 
@@ -28,6 +28,6 @@ class IsPayedResolver implements ArgumentValueResolverInterface
 
     public function resolve(Request $request, ArgumentMetadata $argument) : iterable
     {
-        yield $this->serializer->deserialize($request->getContent(), IsPayed::class, 'json');
+        yield $this->serializer->deserialize($request->getContent(), PayOrderItem::class, 'json');
     }
 }

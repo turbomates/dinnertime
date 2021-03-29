@@ -3,13 +3,13 @@
 namespace App\Order\Presentation\Controller;
 
 use App\Core\Infrastructure\QueryHandler\QueryExecutor;
-use App\Order\Application\Command\IsPayed;
+use App\Order\Application\Command\PayOrderItem;
 use App\Order\Application\OrderHandler;
 use App\Order\Domain\Order;
 use App\Order\Domain\ValueObject\UserId;
 use App\Order\Infrastructure\QueryObject\OrderItemsQuery;
+use App\Order\Infrastructure\QueryObject\OrderQuery;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,16 +52,24 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("api/order/{orderId}/user/payed")
-     * @ParamConverter("order", class="App\Order\Domain\Order", options={"mapping": {"orderId" = "id.id"}})
+     * @Route("/api/order/{order}/user/payed")
      */
-    public function userPayed(IsPayed $isPayed, Order $order) : Response
+    public function userPayed(PayOrderItem $pay, Order $order) : Response
     {
-        var_dump($order);exit();
-        $this->em->transactional(function () use ($isPayed, $orderId){
-           $this->handler->payOrderItem($isPayed, $orderId);
+        $this->em->transactional(function () use ($pay, $order){
+            $this->handler->payOrderItem($pay, $order);
         });
 
         return new JsonResponse(['status' => 'ok']);
+    }
+
+    /**
+     * @Route("/api/order/user/not/payed")
+     */
+    public function haveToPayList(UserId $userId) : Response
+    {
+        $users = $this->queryExecutor->execute(new OrderQuery($userId));
+
+        return new JsonResponse($users);
     }
 }

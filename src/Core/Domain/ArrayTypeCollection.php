@@ -15,10 +15,9 @@ abstract class ArrayTypeCollection extends ArrayCollection
         return parent::add($element);
     }
 
-    public function set($key, $value) : bool
+    public function set($key, $value) : void
     {
         $this->isSupport($value);
-
         parent::set($key, $value);
     }
 

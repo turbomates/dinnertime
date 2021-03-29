@@ -17,6 +17,13 @@ class RestaurantRepository implements RestaurantRepositoryInterface
         $this->em = $em;
     }
 
+    private function createQueryBuilder() : QueryBuilder
+    {
+        return $this->em->createQueryBuilder()
+            ->select('r')
+            ->from(Restaurant::class, 'r');
+    }
+
     public function add(Restaurant $restaurant): void
     {
         $this->em->persist($restaurant);
@@ -29,12 +36,5 @@ class RestaurantRepository implements RestaurantRepositoryInterface
             ->setParameter('name', $name->getName())
             ->getQuery()
             ->getOneOrNullResult();
-    }
-
-    private function createQueryBuilder() : QueryBuilder
-    {
-        return $this->em->createQueryBuilder()
-            ->select('r')
-            ->from(Restaurant::class, 'r');
     }
 }

@@ -52,20 +52,6 @@ class Basket extends AggregateRoot
         $this->dishes->add($dish);
     }
 
-    //I will remake this method
-    public function jsonDishes() : string
-    {
-        $dishes = [];
-        foreach ($this->dishes as $dish){
-            $dishes[] = [
-                'dishName' => $dish->name(),
-                'dishPrice' => $dish->price()->price()
-            ];
-        }
-
-        return json_encode($dishes, JSON_UNESCAPED_UNICODE);
-    }
-
     public function removeDish(Uuid $dishId) : void
     {
         if ($this->dishes->containsKey($dishId->jsonSerialize())) {
@@ -87,6 +73,11 @@ class Basket extends AggregateRoot
         }
 
         return new Price($totalPrice);
+    }
+
+    public function dishes() : Collection
+    {
+        return $this->dishes;
     }
 
     public static function create(UserId $userId) : Basket

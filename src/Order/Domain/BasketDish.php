@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
  * @ORM\Entity()
  * @ORM\Table(name="basket_dish")
  */
-class BasketDish
+class BasketDish implements \JsonSerializable
 {
     /**
      * @ORM\Embedded(class="App\Order\Domain\ValueObject\BasketDish\BasketDishId", columnPrefix=false)
@@ -63,5 +63,13 @@ class BasketDish
     public function name() : string
     {
         return $this->dishName;
+    }
+
+    public function jsonSerialize() : array
+    {
+        return [
+            'dishName' => $this->dishName,
+            'dishPrice' => $this->dishPrice->price()
+        ];
     }
 }

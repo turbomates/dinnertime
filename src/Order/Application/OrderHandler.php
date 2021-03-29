@@ -2,13 +2,12 @@
 
 namespace App\Order\Application;
 
-use App\Order\Application\Command\IsPayed;
+use App\Order\Application\Command\PayOrderItem;
 use App\Order\Domain\BasketRepository;
 use App\Order\Domain\Order;
 use App\Order\Domain\OrderItem;
 use App\Order\Domain\OrderRepository;
 use App\Order\Domain\ValueObject\UserId;
-use Symfony\Component\Uid\Uuid;
 
 class OrderHandler
 {
@@ -27,16 +26,15 @@ class OrderHandler
         $baskets = $this->basketRepository->basket();
         foreach ($baskets as $basket)
         {
-            $order->addOrderItem(new OrderItem($basket->userId(), $basket->totalPrice(), $order, $basket->jsonDishes()));
+            $order->addOrderItem(new OrderItem($basket->userId(), $basket->totalPrice(), $order, json_encode($basket->dishes()->toArray())));
             $this->basketRepository->remove($basket);
         }
         $this->orderRepository->add($order);
     }
 
-    public function payOrderItem(IsPayed $isPayed, string $orderId)
+    public function payOrderItem(PayOrderItem $pay, Order $order)
     {
-        $order = $this->orderRepository->findByUserId(Uuid::fromString($orderId));
-        $order->payOrderItem($isPayed->orderItemId);
+        $order->payOrderItem($pay->orderItemId);
         $this->orderRepository->add($order);
     }
 }

@@ -34,7 +34,9 @@ class UserIdValueResolver implements ArgumentValueResolverInterface
     {
         $path['_controller'] = 'App\User\Presentation\Controller\UserController::user';
         $subRequest = $this->currentRequest->duplicate([], null, $path);
-        $response = json_decode($this->httpKernel->handle($subRequest, HttpKernelInterface::SUB_REQUEST)->getContent(), true);
+        $response = json_decode(
+            $this->httpKernel->handle($subRequest, HttpKernelInterface::SUB_REQUEST)->getContent(), true
+        );
 
         yield new UserId(Uuid::fromString($response['id']));
     }

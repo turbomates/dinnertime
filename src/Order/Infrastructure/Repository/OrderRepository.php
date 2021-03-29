@@ -4,8 +4,8 @@ namespace App\Order\Infrastructure\Repository;
 
 use App\Order\Domain\Order;
 use App\Order\Domain\OrderRepository as OrderRepositoryInterface;
+use App\Order\Domain\ValueObject\UserId;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Uid\Uuid;
 
 class OrderRepository implements OrderRepositoryInterface
 {
@@ -21,14 +21,14 @@ class OrderRepository implements OrderRepositoryInterface
         $this->em->persist($order);
     }
 
-    public function findByUserId(Uuid $orderId): ?Order
+    public function findByUserId(UserId $userId): ?Order
     {
         return $this->em->createQueryBuilder()
             ->select('o')
             ->from(Order::class, 'o')
-            ->andWhere('o.id.id = :id')
-            ->setParameter('id', $orderId)
+            ->andWhere('i.userId.id = :id')
+            ->setParameter('id', $userId->id())
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
     }
 }

@@ -64,9 +64,9 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/api/order/user/not/payed")
+     * @Route("/api/order/have/pay")
      */
-    public function haveToPayList(UserId $userId) : Response
+    public function havePay(UserId $userId) : Response
     {
         $users = $this->queryExecutor->execute(new OrderQuery($userId));
 

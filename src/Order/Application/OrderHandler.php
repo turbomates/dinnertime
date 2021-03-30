@@ -26,7 +26,7 @@ class OrderHandler
         $baskets = $this->basketRepository->basket();
         foreach ($baskets as $basket)
         {
-            $order->addOrderItem(new OrderItem($basket->userId(), $basket->totalPrice(), $order, json_encode($basket->dishes()->toArray())));
+            $order->addOrderItem(new OrderItem($basket->userId(), $basket->totalPrice(), $order, json_encode($basket->dishes()->toArray(), JSON_UNESCAPED_UNICODE)));
             $this->basketRepository->remove($basket);
         }
         $this->orderRepository->add($order);

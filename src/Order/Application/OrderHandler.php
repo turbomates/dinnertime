@@ -7,7 +7,7 @@ use App\Order\Domain\BasketRepository;
 use App\Order\Domain\Order;
 use App\Order\Domain\OrderItem;
 use App\Order\Domain\OrderRepository;
-use App\Order\Domain\ValueObject\UserId;
+use App\Order\Domain\ValueObject\Order\User;
 
 class OrderHandler
 {
@@ -20,13 +20,13 @@ class OrderHandler
         $this->basketRepository = $basketRepository;
     }
 
-    public function makeOrder(UserId $userId) : void
+    public function makeOrder(User $user) : void
     {
-        $order = Order::create($userId);
-        $baskets = $this->basketRepository->basket();
+        $order = Order::create($user);
+        $baskets = $this->basketRepository->basketsCollection();
         foreach ($baskets as $basket)
         {
-            $order->addOrderItem(new OrderItem($basket->userId(), $basket->totalPrice(), $order, json_encode($basket->dishes()->toArray(), JSON_UNESCAPED_UNICODE)));
+            $order->addOrderItem(new OrderItem($basket->userId(), $basket->totalPrice(), $order, $basket->dishes()->toArray()));
             $this->basketRepository->remove($basket);
         }
         $this->orderRepository->add($order);

@@ -6,7 +6,7 @@ use App\Core\Infrastructure\QueryHandler\QueryExecutor;
 use App\Order\Application\Command\PayOrderItem;
 use App\Order\Application\OrderHandler;
 use App\Order\Domain\Order;
-use App\Order\Domain\ValueObject\UserId;
+use App\Order\Domain\ValueObject\Order\User;
 use App\Order\Infrastructure\QueryObject\OrderItemsQuery;
 use App\Order\Infrastructure\QueryObject\OrderQuery;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,10 +32,10 @@ class OrderController extends AbstractController
     /**
      * @Route("/api/order/make")
      */
-    public function order(UserId $userId) : Response
+    public function order(User $user) : Response
     {
-        $this->em->transactional(function () use ($userId){
-            $this->handler->makeOrder($userId);
+        $this->em->transactional(function () use ($user){
+            $this->handler->makeOrder($user);
         });
 
         return new JsonResponse(['status' => 'ok']);
@@ -66,9 +66,9 @@ class OrderController extends AbstractController
     /**
      * @Route("/api/order/have/pay")
      */
-    public function havePay(UserId $userId) : Response
+    public function havePay(User $user) : Response
     {
-        $users = $this->queryExecutor->execute(new OrderQuery($userId));
+        $users = $this->queryExecutor->execute(new OrderQuery($user->id()));
 
         return new JsonResponse($users);
     }

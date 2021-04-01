@@ -43,6 +43,10 @@ services:
         tags:
             - { name: controller.argument_value_resolver }
 
+    App\Order\Presentation\ArgumentResolver\UserValueResolver:
+        tags:
+            - { name: controller.argument_value_resolver }
+
     App\Order\Presentation\ArgumentResolver\AddToBasketResolver:
         tags:
             - { name: controller.argument_value_resolver }

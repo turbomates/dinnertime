@@ -48,9 +48,9 @@ class OrderItem
     /**
      * @ORM\Column(name="dishes", type="json", length=255)
      */
-    private string $dishes;
+    private array $dishes;
 
-    public function __construct(UserId $userId, Price $totalPrice, Order $order, string $dishes)
+    public function __construct(UserId $userId, Price $totalPrice, Order $order, array $dishes)
     {
         $this->id = new OrderItemId();
         $this->createdAt = new CreatedAt();
@@ -70,5 +70,4 @@ class OrderItem
     {
         return $this->userId;
     }
-
 }

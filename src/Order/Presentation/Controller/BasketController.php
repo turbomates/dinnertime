@@ -6,7 +6,7 @@ use App\Core\Infrastructure\QueryHandler\QueryExecutor;
 use App\Order\Application\BasketHandler;
 use App\Order\Application\Command\AddToBasket;
 use App\Order\Application\Command\RemoveDish;
-use App\Order\Domain\ValueObject\UserId;
+use App\Order\Domain\ValueObject\Order\User;
 use App\Order\Infrastructure\QueryObject\BasketDishQuery;
 use App\Order\Infrastructure\QueryObject\BasketQuery;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,10 +31,10 @@ class BasketController extends AbstractController
     /**
      * @Route("/api/basket/add/dish")
      */
-    public function addDish(UserId $userId, AddToBasket $addToBasket) : Response
+    public function addDish(User $user, AddToBasket $addToBasket) : Response
     {
-        $this->em->transactional(function () use ($addToBasket, $userId){
-            $this->handler->addToBasket($addToBasket, $userId);
+        $this->em->transactional(function () use ($addToBasket, $user){
+            $this->handler->addToBasket($addToBasket, $user->id());
         });
 
         return new JsonResponse(['status' => 'ok']);
@@ -43,10 +43,10 @@ class BasketController extends AbstractController
     /**
      * @Route("/api/basket/remove/dish")
      */
-    public function removeDish(UserId $userId, RemoveDish $removeDish) : Response
+    public function removeDish(User $user, RemoveDish $removeDish) : Response
     {
-        $this->em->transactional(function () use ($removeDish, $userId){
-           $this->handler->removeDish($userId, $removeDish);
+        $this->em->transactional(function () use ($removeDish, $user){
+           $this->handler->removeDish($user->id(), $removeDish);
         });
 
         return new JsonResponse(['status' => 'ok']);
@@ -55,9 +55,9 @@ class BasketController extends AbstractController
     /**
      * @Route("/api/basket/user")
      */
-    public function basketUser(UserId $userId) : Response
+    public function basketUser(User $user) : Response
     {
-        $basket = $this->queryExecutor->execute(new BasketDishQuery($userId));
+        $basket = $this->queryExecutor->execute(new BasketDishQuery($user->id()));
 
         return new JsonResponse($basket);
     }
@@ -65,7 +65,7 @@ class BasketController extends AbstractController
     /**
      * @Route("/api/basket")
      */
-    public function basket(UserId $userId) : Response
+    public function basket() : Response
     {
         $basket = $this->queryExecutor->execute(new BasketQuery());
 

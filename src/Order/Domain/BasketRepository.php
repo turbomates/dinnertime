@@ -10,7 +10,7 @@ interface BasketRepository
 
     public function findByUserId(UserId $id) : ?Basket;
 
-    public function basket() : array;
+    public function basketsCollection() : array;
 
     public function remove(Basket $basket) : void;
 }

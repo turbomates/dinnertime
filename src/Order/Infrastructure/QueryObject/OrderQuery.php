@@ -20,16 +20,12 @@ class OrderQuery implements QueryObject
     public function execute(EntityManagerInterface $em): array
     {
         return $em->createQueryBuilder()
-            ->select('o.id.id as orderId, o.userId.id as userId, 
-                            i.totalPrice.price as price, i.createdAt.createdAt as createdAt,
-                            u.name.firstName as userFirstName, u.name.lastName as userLastName, 
-                            u.phoneNumber.phoneNumber as phoneNumber, u.email.email as email')
+            ->select('o.id.id as orderId, o.userInfo.userInfo as userInfo,
+                            i.totalPrice.price as price, i.createdAt.createdAt as createdAt')
             ->from(Order::class, 'o')
-            ->from(User::class, 'u')
             ->join('o.orderItems', 'i')
             ->andWhere('i.userId.id = :id')
             ->andWhere('i.isPayed = false')
-            ->andWhere('u.id.id = o.userId.id')
             ->setParameter('id', $this->userId->id())
             ->getQuery()
             ->getResult();

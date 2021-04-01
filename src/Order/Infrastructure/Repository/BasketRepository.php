@@ -32,7 +32,7 @@ class BasketRepository implements BasketRepositoryInterface
             ->getOneOrNullResult();
     }
 
-    public function basket() : array
+    public function basketsCollection() : array
     {
         return $this->em->createQueryBuilder()
             ->select( 'b')

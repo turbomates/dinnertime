@@ -10,6 +10,7 @@ use App\Order\Domain\ValueObject\Order\User;
 use App\Order\Infrastructure\QueryObject\OrderItemsQuery;
 use App\Order\Infrastructure\QueryObject\OrderQuery;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,15 +45,16 @@ class OrderController extends AbstractController
     /**
      * @Route("/api/order")
      */
-    public function orderList() : Response
+    public function orderList(User $user) : Response
     {
-        $order = $this->queryExecutor->execute(new OrderItemsQuery());
+        $order = $this->queryExecutor->execute(new OrderItemsQuery($user->id()));
 
         return new JsonResponse($order);
     }
 
     /**
      * @Route("/api/order/{order}/user/payed")
+     * @IsGranted("CAN_PAY", subject="order")
      */
     public function userPayed(PayOrderItem $pay, Order $order) : Response
     {

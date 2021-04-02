@@ -46,6 +46,7 @@ class Order extends AggregateRoot
 
     public function payOrderItem(Uuid $orderItemId) : void
     {
+
         $orderItem = $this->orderItems->get($orderItemId->jsonSerialize());
         $orderItem->pay();
     }
@@ -53,5 +54,10 @@ class Order extends AggregateRoot
     public static function create(User $user) : Order
     {
         return new Order($user);
+    }
+
+    public function orderUser() : User
+    {
+        return $this->userInfo;
     }
 }

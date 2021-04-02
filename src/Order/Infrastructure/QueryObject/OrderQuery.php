@@ -5,7 +5,6 @@ namespace App\Order\Infrastructure\QueryObject;
 use App\Core\Infrastructure\QueryHandler\QueryObject;
 use App\Order\Domain\Order;
 use App\Order\Domain\ValueObject\UserId;
-use App\User\Domain\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 class OrderQuery implements QueryObject

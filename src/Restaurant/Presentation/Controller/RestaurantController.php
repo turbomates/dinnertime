@@ -6,30 +6,26 @@ use App\Core\Infrastructure\QueryHandler\QueryExecutor;
 use App\Restaurant\Domain\ValueObject\Restaurant\Name;
 use App\Restaurant\Infrastructure\QueryObject\DishQuery;
 use App\Restaurant\Infrastructure\QueryObject\RestaurantQuery;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class RestaurantController extends AbstractController
 {
-    private EntityManagerInterface $em;
-    private SerializerInterface $serializer;
+    private QueryExecutor $queryExecutor;
 
-    public function __construct(EntityManagerInterface $em, SerializerInterface $serializer)
+    public function __construct(QueryExecutor $queryExecutor)
     {
-        $this->em = $em;
-        $this->serializer = $serializer;
+        $this->queryExecutor = $queryExecutor;
     }
 
     /**
      * @Route("/restaurants")
      */
-    public function restaurants(QueryExecutor $queryExecutor) : Response
+    public function restaurants() : Response
     {
-        $restaurants = $queryExecutor->execute(new RestaurantQuery());
+        $restaurants = $this->queryExecutor->execute(new RestaurantQuery());
 
         return new JsonResponse($restaurants);
     }
@@ -37,10 +33,10 @@ class RestaurantController extends AbstractController
     /**
      * @Route("/{restaurant}/dishes")
      */
-    public function dishes(QueryExecutor $queryExecutor, string $restaurant) : Response
+    public function dishes(string $restaurant) : Response
     {
         $name = new Name($restaurant);
-        $dishes = $queryExecutor->execute(new DishQuery($name));
+        $dishes = $this->queryExecutor->execute(new DishQuery($name));
 
         return new JsonResponse($dishes);
     }

@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Restaurant\Domain\Collection;
+namespace App\Order\Domain\Collection;
 
 use App\Core\Domain\ArrayTypeCollection;
-use App\Restaurant\Domain\Dish;
+use App\Order\Domain\BasketDish;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
-class Menu extends ArrayTypeCollection
+class Dishes extends ArrayTypeCollection
 {
-    public function isSupport($element) : bool
+    public function isSupport($element): bool
     {
-        if (!is_object($element) && (get_class($element) !== Dish::class)){
+        if (!is_object($element) && (get_class($element) !== BasketDish::class)){
             throw new Exception('the object cannot will added or remove to the collection');
         }
 

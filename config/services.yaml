@@ -18,6 +18,7 @@ services:
         exclude:
             - '../src/DependencyInjection/'
             - '../src/User/Domain/'
+            - '../src/Order/Domain/'
             - '../src/Kernel.php'
             - '../src/Tests/'
 
@@ -31,10 +32,32 @@ services:
     # please note that last definitions always *replace* previous ones
 
     App\User\Domain\UserRepository: '@App\User\Infrastructure\Repository\UserRepository'
+    App\Order\Domain\BasketRepository: '@App\Order\Infrastructure\Repository\BasketRepository'
+    App\Order\Domain\OrderRepository: '@App\Order\Infrastructure\Repository\OrderRepository'
 
     App\User\Presentation\ArgumentResolver\UserIdValueResolver:
         tags:
             - { name: controller.argument_value_resolver}
+
+    App\Order\Presentation\ArgumentResolver\UserIdValueResolver:
+        tags:
+            - { name: controller.argument_value_resolver }
+
+    App\Order\Presentation\ArgumentResolver\UserValueResolver:
+        tags:
+            - { name: controller.argument_value_resolver }
+
+    App\Order\Presentation\ArgumentResolver\AddToBasketResolver:
+        tags:
+            - { name: controller.argument_value_resolver }
+
+    App\Order\Presentation\ArgumentResolver\RemoveDishResolver:
+        tags:
+            - { name: controller.argument_value_resolver }
+
+    App\Order\Presentation\ArgumentResolver\PayOrderItemResolver:
+        tags:
+            - { name: controller.argument_value_resolver }
 
     _instanceof:
         App\Restaurant\Parser\Parser:
@@ -44,5 +67,9 @@ services:
         arguments:
             $importers: !tagged parser
 
+    App\Order\Presentation\Voter\UserVoter:
+        arguments: [ '@doctrine.orm.entity_manager' ]
+        tags:
+            - 'security.voter'
 
 

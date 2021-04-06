@@ -9,3 +9,7 @@ user_controller:
 restaurant_controller:
     resource: ../../src/Restaurant/Presentation/Controller
     type: annotation
+
+order_controller:
+    resource: ../../src/Order/Presentation/Controller
+    type: annotation
